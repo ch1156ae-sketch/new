@@ -6,7 +6,7 @@ const skipBtn = document.querySelector(".skip-btn");
 const loginBtn = document.querySelector(".login-btn");
 
 // 기본 이동 링크
-const redirectUrl = "https://www.naver.com";
+const redirectUrl = "https://ch1156ae-sketch.github.io/new/utbt.login/html/index.html";
 
 // 현재 보여지는 스플래쉬 화면 번호
 let currentIndex = 0;
