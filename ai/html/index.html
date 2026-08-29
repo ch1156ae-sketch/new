@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 협업 — 지금 하던 일을 더 빠르게</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/stye.css">
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<!-- ─── Navigation ─── -->
+<nav id="nav">
+  <a href="#" class="nav-logo"><span class="dot"></span> AI협업</a>
+  <div class="nav-links">
+    <a href="#before-after">변화 사례</a>
+    <a href="#use-case">실무 활용법</a>
+    <a href="#why">왜 못 쓰나요?</a>
+    <a href="#application" class="nav-cta" data-application-modal>무료로 시작하기</a>
+  </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero" id="hero">
+  <div class="hero-bg-dots"></div>
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="pulse"></span> 직장인 AI 실무 협업</div>
+      <h1 class="hero-title">
+        AI, 어렵지 않습니다.<br>
+        지금 하던 일을<br>
+        <em>더 빠르게</em> 만드는 방법
+      </h1>
+      <p class="hero-sub">막막한 직장인을 위한 실무 AI 협업 가이드.<br>이론 말고, 내일 바로 쓸 수 있는 방법만 알려드립니다.</p>
+      <div class="hero-btns">
+        <a href="#application" class="btn-primary" data-application-modal>
+          지금 바로 시작하기
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#before-after" class="btn-secondary">
+          변화 사례 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 9l-7 7-7-7"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">3<span>시간</span></div>
+          <div class="stat-label">보고서 작성 시간 단축</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span>↑</span>85<span>%</span></div>
+          <div class="stat-label">업무 처리 속도 향상</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">0<span>원</span></div>
+          <div class="stat-label">시작 비용</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-main">
+        <div class="card-header-row">
+          <div class="card-icon">🤖</div>
+          <div class="card-title-group">
+            <strong>AI 협업 생산성 리포트</strong>
+            <span>오늘의 업무 현황</span>
+          </div>
+        </div>
+        <div class="progress-rows">
+          <div>
+            <label><span>📄 보고서 작성</span><span class="progress-percent">82%</span></label>
+            <div class="progress-bar"><div class="progress-fill p1"></div></div>
+          </div>
+          <div>
+            <label><span>📧 이메일 처리</span><span class="progress-percent">68%</span></label>
+            <div class="progress-bar"><div class="progress-fill p2"></div></div>
+          </div>
+          <div>
+            <label><span>📊 데이터 분석</span><span class="progress-percent">91%</span></label>
+            <div class="progress-bar"><div class="progress-fill p3"></div></div>
+          </div>
+        </div>
+        <div class="card-tag-row">
+          <span class="tag blue">⚡ 시간 절약 3h</span>
+          <span class="tag green">✅ 완성도 UP</span>
+          <span class="tag yellow">🎯 집중 업무 확보</span>
+        </div>
+      </div>
+      <div class="hero-floating-badge">
+        <span class="floating-badge-icon">⏱</span>
+        <div class="floating-badge-text">
+          <strong>평균 업무 단축</strong>
+          <span>하루 3시간 이상 절약</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Before / After ─── -->
+<section class="section" id="before-after">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">📌 BEFORE &amp; AFTER</div>
+      <h2 class="section-title">AI를 쓰면 이렇게 바뀝니다</h2>
+      <p class="section-sub">어제와 똑같은 일인데, 걸리는 시간은 완전히 달라집니다.</p>
+    </div>
+    <div class="ba-grid reveal reveal-delay-2">
+      <div class="ba-col before">
+        <span class="ba-col-label before-label">❌ AI 없이</span>
+        <div class="ba-items">
+          <div class="ba-item before-item">
+            <span class="ba-item-icon">😓</span>
+            <div class="ba-item-text"><strong>보고서 초안 작성</strong><span>빈 화면 앞에서 구조 잡는 데만 2시간</span></div>
+          </div>
+          <div class="ba-item before-item">
+            <span class="ba-item-icon">📝</span>
+            <div class="ba-item-text"><strong>회의록 직접 타이핑</strong><span>30분 회의 → 정리에 1시간 소요</span></div>
+          </div>
+          <div class="ba-item before-item">
+            <span class="ba-item-icon">🤔</span>
+            <div class="ba-item-text"><strong>이메일 문구 고민</strong><span>"어떻게 써야 예의 바를까" 30분 고민</span></div>
+          </div>
+          <div class="ba-item before-item">
+            <span class="ba-item-icon">🔍</span>
+            <div class="ba-item-text"><strong>데이터 분석</strong><span>엑셀 함수 구글링하며 1시간 허비</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ba-divider">
+        <div class="ba-divider-icon">→</div>
+      </div>
+      <div class="ba-col after">
+        <span class="ba-col-label after-label">✅ AI 협업 후</span>
+        <div class="ba-items">
+          <div class="ba-item after-item">
+            <span class="ba-item-icon">⚡</span>
+            <div class="ba-item-text"><strong>AI 초안 10분 생성</strong><span>검토·수정까지 총 30분 완료</span></div>
+          </div>
+          <div class="ba-item after-item">
+            <span class="ba-item-icon">🎙</span>
+            <div class="ba-item-text"><strong>녹음 파일 → 자동 요약</strong><span>AI가 핵심만 정리, 5분 검수로 완성</span></div>
+          </div>
+          <div class="ba-item after-item">
+            <span class="ba-item-icon">✉️</span>
+            <div class="ba-item-text"><strong>AI 1차 초안 즉시 생성</strong><span>톤 조정 후 5분 안에 발송 완료</span></div>
+          </div>
+          <div class="ba-item after-item">
+            <span class="ba-item-icon">📈</span>
+            <div class="ba-item-text"><strong>자연어로 질문 → 즉시 분석</strong><span>"매출 증감 원인 알려줘" → 바로 결과</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Use Case ─── -->
+<section class="section" id="use-case">
+  <div class="section-inner">
+    <div class="use-header reveal">
+      <div>
+        <div class="section-tag">🛠 USE CASE</div>
+        <h2 class="section-title">바로 써먹는 AI 실무 활용법</h2>
+        <p class="section-sub">이론이 아닙니다. 내일 출근해서 바로 적용하세요.</p>
+      </div>
+    </div>
+    <div class="use-grid">
+      <div class="use-card reveal reveal-delay-1">
+        <span class="use-card-emoji">📄</span>
+        <div class="use-card-title">보고서 자동 초안</div>
+        <div class="use-card-desc">주제와 핵심 데이터만 입력하면 AI가 목차부터 본문까지 초안을 즉시 생성합니다.</div>
+        <div class="use-card-time">⚡ 기존 대비 80% 단축</div>
+      </div>
+      <div class="use-card reveal reveal-delay-2">
+        <span class="use-card-emoji">📧</span>
+        <div class="use-card-title">이메일 초안 생성</div>
+        <div class="use-card-desc">상황과 상대방 관계를 알려주면 AI가 적절한 톤으로 이메일 초안을 작성합니다.</div>
+        <div class="use-card-time">⚡ 5분 안에 완성</div>
+      </div>
+      <div class="use-card reveal reveal-delay-3">
+        <span class="use-card-emoji">🎙</span>
+        <div class="use-card-title">회의록 자동 정리</div>
+        <div class="use-card-desc">회의 내용을 붙여넣으면 결정사항·액션아이템 중심으로 깔끔하게 정리해 줍니다.</div>
+        <div class="use-card-time">⚡ 30분 → 5분</div>
+      </div>
+      <div class="use-card reveal reveal-delay-4">
+        <span class="use-card-emoji">📊</span>
+        <div class="use-card-title">데이터 해석·요약</div>
+        <div class="use-card-desc">복잡한 데이터를 자연어로 설명하면 인사이트와 시사점을 즉시 도출합니다.</div>
+        <div class="use-card-time">⚡ 분석 시간 90% 단축</div>
+      </div>
+      <div class="use-card reveal reveal-delay-1">
+        <span class="use-card-emoji">💡</span>
+        <div class="use-card-title">아이디어 브레인스토밍</div>
+        <div class="use-card-desc">기획 방향만 주면 다양한 각도의 아이디어를 빠르게 도출, 업무 초반 막힘을 해소합니다.</div>
+        <div class="use-card-time">⚡ 발상의 폭 3배 확장</div>
+      </div>
+      <div class="use-card reveal reveal-delay-2">
+        <span class="use-card-emoji">📋</span>
+        <div class="use-card-title">기획서·제안서 작성</div>
+        <div class="use-card-desc">목적과 배경만 입력하면 구조화된 기획서 초안과 설득력 있는 논리 흐름을 제안합니다.</div>
+        <div class="use-card-time">⚡ 작성 시간 70% 절감</div>
+      </div>
+      <div class="use-card reveal reveal-delay-3">
+        <span class="use-card-emoji">🔍</span>
+        <div class="use-card-title">자료 조사 및 요약</div>
+        <div class="use-card-desc">방대한 자료를 빠르게 핵심만 추출하고, 필요한 정보를 맞춤형으로 정리합니다.</div>
+        <div class="use-card-time">⚡ 조사 시간 60% 단축</div>
+      </div>
+      <div class="use-card reveal reveal-delay-4">
+        <span class="use-card-emoji">🗂</span>
+        <div class="use-card-title">업무 우선순위 정리</div>
+        <div class="use-card-desc">할 일 목록을 붙여넣으면 중요도·긴급도 기준으로 오늘 집중해야 할 업무를 정렬합니다.</div>
+        <div class="use-card-time">⚡ 하루 계획 5분 완성</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Why Section ─── -->
+<section class="section" id="why">
+  <div class="section-inner">
+    <div class="why-inner">
+      <div class="why-empathy reveal">
+        <div class="section-tag">💬 공감</div>
+        <h2 class="section-title empathy-title">혹시 이런 생각<br>해보신 적 있나요?</h2>
+        <div class="empathy-card active">
+          <span class="empathy-quote">💬</span>
+          <div class="empathy-text">
+            "ChatGPT는 써봤는데… 업무에 어떻게 쓰는지 모르겠어요."
+            <strong>— 5년차 마케터</strong>
+          </div>
+        </div>
+        <div class="empathy-card">
+          <span class="empathy-quote">💬</span>
+          <div class="empathy-text">
+            "AI 써보려다가 답변이 이상해서 그냥 제가 다 했어요."
+            <strong>— 7년차 기획자</strong>
+          </div>
+        </div>
+        <div class="empathy-card">
+          <span class="empathy-quote">💬</span>
+          <div class="empathy-text">
+            "배울 시간도 없고, 배워서 실제로 쓸 수 있을지도 모르겠고…"
+            <strong>— 3년차 영업담당자</strong>
+          </div>
+        </div>
+      </div>
+      <div class="why-answer reveal reveal-delay-2">
+        <div class="section-tag">💡 답</div>
+        <h2 class="section-title">AI를 못 쓰는 건<br>능력 문제가 아닙니다</h2>
+        <p class="section-sub why-section-sub">방법을 몰라서입니다. 방법만 알면 지금 바로 바뀝니다.</p>
+        <div class="why-point">
+          <div class="why-point-num">01</div>
+          <div class="why-point-text">
+            <strong>질문하는 법(프롬프트)이 다릅니다</strong>
+            <span>같은 AI도 어떻게 묻느냐에 따라 결과물이 완전히 달라집니다.</span>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-num">02</div>
+          <div class="why-point-text">
+            <strong>실무 맥락을 연결해야 합니다</strong>
+            <span>내 업무 흐름에 맞게 AI를 끼워 넣는 설계가 필요합니다.</span>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-num">03</div>
+          <div class="why-point-text">
+            <strong>작은 성공 경험이 먼저입니다</strong>
+            <span>딱 한 가지만 바꿔도 "이게 된다"는 확신이 생깁니다.</span>
+          </div>
+        </div>
+        <div class="why-cta-row">
+          <a href="#application" class="btn-primary" data-application-modal>
+            무료로 방법 알아보기
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Final CTA ─── -->
+<section id="cta-final">
+  <div class="cta-bg-shape s1"></div>
+  <div class="cta-bg-shape s2"></div>
+  <div class="cta-inner reveal">
+    <div class="cta-overline">✦ 지금 시작하세요</div>
+    <h2 class="cta-title">오늘부터 AI와 함께<br>일하세요</h2>
+    <p class="cta-sub">어렵게 생각할 필요 없습니다.<br>지금 신청하면 실무에 바로 쓸 수 있는 방법을 알려드립니다.</p>
+    <a href="#application" class="btn-white" data-application-modal>
+      무료 신청하기
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <p class="cta-note">* 비용 없음 · 부담 없음 · 언제든 취소 가능</p>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <p><strong>AI협업</strong> &nbsp;|&nbsp; 직장인을 위한 실무 AI 협업 가이드</p>
+  <p class="footer-copyright">© 2026 AI협업. All rights reserved.</p>
+</footer>
+
+<!-- ─── Scroll to Top ─── -->
+<button class="top-button" id="top-button" type="button" aria-label="페이지 맨 위로 이동">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M6 15l6-6 6 6"/>
+  </svg>
+</button>
+
+<!-- ─── Application Modal ─── -->
+<div id="form-modal" class="application-modal" aria-hidden="true">
+  <div id="modal-backdrop" class="application-modal-backdrop"></div>
+
+  <section class="form-modal-panel" role="dialog" aria-modal="true" aria-labelledby="application-title">
+    <div class="form-modal-header">
+      <div class="modal-heading">
+        <div class="modal-heading-icon" aria-hidden="true">✦</div>
+        <div>
+          <h2 id="application-title">무료 신청하기</h2>
+          <p>AI 협업 실무 가이드 신청 정보를 입력해주세요.</p>
+        </div>
+      </div>
+
+      <button id="modal-close" class="modal-close" type="button" aria-label="신청 팝업 닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="application-modal-body">
+      <form id="application-form" class="application-form" novalidate>
+        <div class="form-intro">
+          <strong>신청자 정보</strong>
+          <span>아래 세 항목을 작성하면 신청이 완료됩니다.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="applicant-name">이름 <span>*</span></label>
+          <input id="applicant-name" name="name" type="text" autocomplete="name" placeholder="이름을 입력해주세요" required>
+          <p class="field-error" data-error-for="applicant-name"></p>
+        </div>
+
+        <div class="form-field">
+          <label for="applicant-phone">연락처 <span>*</span></label>
+          <input id="applicant-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-1234-5678" maxlength="13" required>
+          <p class="field-error" data-error-for="applicant-phone"></p>
+        </div>
+
+        <div class="form-field">
+          <label for="applicant-email">이메일 주소 <span>*</span></label>
+          <input id="applicant-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="example@email.com" required>
+          <p class="field-error" data-error-for="applicant-email"></p>
+        </div>
+
+        <p class="form-helper">입력한 정보는 신청 확인을 위한 용도로 사용됩니다.</p>
+
+        <button class="application-submit" type="submit">
+          신청 완료하기
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <div id="application-success" class="application-success" hidden aria-live="polite">
+        <div class="success-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3>신청이 완료되었습니다</h3>
+        <p><strong id="success-name"></strong>님의 신청 정보를 확인했어요.<br>입력해주신 연락처와 이메일을 기준으로 안내됩니다.</p>
+        <button id="success-close" class="application-submit success-close" type="button">확인</button>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="../js/script.js"></script>
+</body>
+</html>
