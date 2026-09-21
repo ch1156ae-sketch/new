@@ -1,0 +1,305 @@
+@charset "UTF-8";
+            @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+            @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap");
+
+            :root {
+                --side: 24px;
+                --main: #ff5a20;
+                --button: #ff9f7e;
+                --background: #ecedee;
+                --placeholder: #a6aab3;
+                --text: #262626;
+                --line: #bfbfbf;
+                --check: #caccd1;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            html,
+            body {
+                min-width: 100%;
+                min-height: 100%;
+            }
+
+            button,
+            input,
+            a {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                background: #dfe1e3;
+                font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+            }
+
+            .login-screen {
+                position: relative;
+                width: min(100%, 375px);
+                height: 812px;
+                overflow: hidden;
+                background: var(--background);
+            }
+
+            .login-logo {
+                position: absolute;
+                top: 143px;
+                left: 50%;
+                display: block;
+                width: 108px;
+                height: 108px;
+                object-fit: contain;
+                transform: translateX(-50%);
+            }
+
+            .login-form {
+                position: absolute;
+                top: 299px;
+                left: var(--side);
+                width: 327px;
+            }
+
+            .input-group {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+
+        .input-group input {
+            width: 327px;
+            height: 48px;
+                border: 0;
+                border-radius: 14px 8px 12px 7px / 16px 10px 14px 9px;
+                outline: none;
+                background: #fff;
+                color: var(--text);
+                caret-color: var(--main);
+            font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: normal;
+            padding: 0 20px;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: background-color 180ms ease, box-shadow 180ms ease;
+        }
+
+            .input-group input::placeholder {
+                color: var(--placeholder);
+            font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: normal;
+            opacity: 1;
+        }
+
+            .input-group input:hover,
+            .input-group input:focus {
+                background: #ffefe9;
+                box-shadow: none;
+            }
+
+            .input-group input[aria-invalid="true"] {
+                box-shadow: inset 0 0 0 1.5px var(--main);
+            }
+
+            .login-options {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+                margin-top: 24px;
+            }
+
+            .check-option {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--text);
+                font-family: "Noto Sans KR", sans-serif;
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 24px;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .check-option input {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                opacity: 0;
+            }
+
+            .checkmark {
+                position: relative;
+                flex: 0 0 auto;
+                width: 24px;
+                height: 24px;
+                border: 1.5px solid var(--check);
+                border-radius: 44% 56% 47% 53% / 55% 43% 57% 45%;
+                transition: background-color 180ms ease, border-color 180ms ease;
+            }
+
+            .check-option input:checked + .checkmark {
+                border-color: transparent;
+                background: var(--main);
+            }
+
+            .check-option input:checked + .checkmark::after {
+                position: absolute;
+                top: 5px;
+                left: 8px;
+                width: 5px;
+                height: 9px;
+                border: solid #fff;
+                border-width: 0 2px 2px 0;
+                content: "";
+                transform: rotate(45deg);
+            }
+
+            .check-option input:focus-visible + .checkmark {
+                outline: 2px solid rgb(255 90 32 / 35%);
+                outline-offset: 2px;
+            }
+
+            .form-message {
+                position: absolute;
+                top: 171px;
+                left: 0;
+                color: var(--main);
+                font-size: 11px;
+                font-weight: 500;
+                line-height: 14px;
+            }
+
+            .login-button {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 327px;
+                height: 48px;
+                margin-top: 24px;
+                border: 0;
+                border-radius: 0;
+                background: transparent;
+                color: #fff;
+                font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+                font-size: 16px;
+                font-weight: 500;
+                cursor: pointer;
+                isolation: isolate;
+            }
+
+            .login-button::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: -1;
+                background: var(--button);
+                border-radius: 14px 10px 13px 9px / 12px 15px 11px 14px;
+                clip-path: path("M 10 2 C 58 0 106 3 160 1 C 218 0 270 3 317 1 C 324 1 327 6 326 13 L 324 37 C 324 44 321 47 313 46 C 257 45 211 48 160 46 C 108 44 66 49 11 46 C 4 46 1 42 2 36 L 4 12 C 3 6 5 3 10 2 Z");
+                transition: background-color 200ms ease;
+            }
+
+            .login-button > span {
+                position: relative;
+                z-index: 1;
+            }
+
+            .login-button:hover,
+            .login-button:focus-visible,
+            .login-button:active {
+                background: transparent;
+            }
+
+            .login-button:hover::before,
+            .login-button:focus-visible::before,
+            .login-button:active::before {
+                background: var(--main);
+            }
+
+            .login-button.is-shaking {
+                animation: shake 320ms ease;
+            }
+
+            .or-divider {
+                position: absolute;
+                top: 587px;
+                left: 20px;
+                display: grid;
+                grid-template-columns: 148px auto 148px;
+                align-items: center;
+                column-gap: 8px;
+                color: var(--line);
+            }
+
+            .or-divider span {
+                height: 1px;
+                background: var(--line);
+            }
+
+            .or-divider b {
+                font-family: "Noto Sans KR", sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                line-height: 20px;
+            }
+
+            .social-login {
+                position: absolute;
+                top: 655px;
+                left: 50%;
+                display: flex;
+                align-items: center;
+                gap: 24px;
+                transform: translateX(-50%);
+            }
+
+            .social-login a,
+            .social-login img {
+                display: block;
+                width: 28px;
+                height: 28px;
+            }
+
+            .social-login a {
+                border-radius: 50%;
+                transition: opacity 180ms ease;
+            }
+
+            .social-login a:hover,
+            .social-login a:focus-visible {
+                opacity: 0.72;
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                35% { transform: translateX(-5px); }
+                70% { transform: translateX(5px); }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                *, *::before, *::after {
+                    transition-duration: 0.01ms !important;
+                    animation-duration: 0.01ms !important;
+                }
+            }

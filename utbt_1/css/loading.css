@@ -1,0 +1,75 @@
+       @charset "UTF-8";
+
+            :root {
+                --screen-width: 375px;
+                --screen-height: 812px;
+                --brand-orange: #ff5a20;
+                --track-color: #f1f2f4;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            html,
+            body {
+                min-width: 100%;
+                min-height: 100%;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                background: #f4f4f4;
+                font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+            }
+
+            .splash {
+                position: relative;
+                width: min(100%, var(--screen-width));
+                height: var(--screen-height);
+                overflow: hidden;
+                background: #fff;
+            }
+
+            .brand-area {
+                position: absolute;
+                top: 308.79px;
+                left: 96px;
+                width: 183px;
+            }
+
+            .brand-logo {
+                display: block;
+                width: 183px;
+                height: 194.41px;
+                object-fit: contain;
+            }
+
+            .loading {
+                position: relative;
+                width: 183px;
+                height: 6px;
+                margin-top: 24px;
+                overflow: hidden;
+                border-radius: 999px;
+                background: var(--track-color);
+            }
+
+            .loading__fill {
+                display: block;
+                width: 0;
+                height: 100%;
+                border-radius: inherit;
+                background: var(--brand-orange);
+                box-shadow: 0 0 8px rgb(255 90 32 / 28%);
+                transition: width 80ms linear;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .loading__fill {
+                    transition: none;
+                }
+            }

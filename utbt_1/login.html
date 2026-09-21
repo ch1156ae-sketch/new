@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UTBT 로그인</title>
+        <link rel="stylesheet" href="./css/login.css">
+    </head>
+    <body>
+        <main class="login-screen">
+            <img class="login-logo" src="images/logo.png" width="108" height="108" alt="UTBT 로고" />
+
+            <form class="login-form" novalidate>
+                <div class="input-group">
+                    <label class="sr-only" for="user-id">아이디 또는 이메일</label>
+                    <input id="user-id" name="userId" type="text" autocomplete="username" placeholder="아이디 또는 이메일을 입력해주세요." required />
+                    <label class="sr-only" for="user-password">비밀번호</label>
+                    <input id="user-password" name="password" type="password" autocomplete="current-password" placeholder="비밀번호를 입력해주세요." required />
+                </div>
+
+                <div class="login-options">
+                    <label class="check-option">
+                        <input id="auto-login" type="checkbox" />
+                        <span class="checkmark" aria-hidden="true"></span>
+                        <span>자동 로그인</span>
+                    </label>
+                    <label class="check-option">
+                        <input id="save-id" type="checkbox" />
+                        <span class="checkmark" aria-hidden="true"></span>
+                        <span>아이디저장</span>
+                    </label>
+                </div>
+
+                <p class="form-message" aria-live="polite"></p>
+                <button class="login-button" type="submit"><span>로그인</span></button>
+            </form>
+
+            <div class="or-divider" aria-hidden="true"><span></span><b>Or</b><span></span></div>
+
+            <nav class="social-login" aria-label="소셜 로그인">
+                <a href="https://www.kakaocorp.com/" target="_blank" rel="noopener noreferrer" aria-label="카카오 로그인"><img src="./images/kakao.png" width="28" height="28" alt="" /></a>
+                <a href="https://www.naver.com/" target="_blank" rel="noopener noreferrer" aria-label="네이버 로그인"><img src="./images/naver.png" width="28" height="28" alt="" /></a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 로그인"><img src="./images/insta.png" width="28" height="28" alt="" /></a>
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="페이스북 로그인"><img src="./images/facebook.png" width="28" height="28" alt="" /></a>
+            </nav>
+        </main>
+        <script src="./js/login.js"></script>
+    </body>
+</html>

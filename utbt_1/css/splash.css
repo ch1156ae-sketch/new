@@ -1,0 +1,233 @@
+@charset "UTF-8";
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@600&display=swap");
+
+:root {
+    --side: 24px;
+    --primary: #ff5a20;
+    --button: #ff9f7e;
+    --title: #111827;
+    --description: #6b7280;
+    --inactive: #ecedee;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    background: #f4f4f4;
+    font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+}
+
+.splash {
+    position: relative;
+    width: min(100%, 375px);
+    height: 812px;
+    overflow: hidden;
+    background: #fff;
+    touch-action: pan-y;
+}
+
+.slides,
+.slide {
+    position: absolute;
+    inset: 0;
+}
+
+.slide {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(26px);
+    transition:
+        opacity 480ms ease,
+        transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 560ms;
+}
+
+.slide.is-active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition-delay: 0s;
+}
+
+.slide.is-leaving {
+    visibility: visible;
+    opacity: 0;
+    transform: translateX(-26px);
+}
+
+.slide__content {
+    position: absolute;
+    top: 106px;
+    left: var(--side);
+    width: 327px;
+}
+
+.slide__title {
+    color: var(--title);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+}
+
+.slide__description {
+    margin-top: 8px;
+    color: var(--description);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.slide__image {
+    display: block;
+    width: 327px;
+    height: 327px;
+    margin-top: 70px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.slide__footer {
+    position: absolute;
+    right: var(--side);
+    bottom: 140px;
+    left: var(--side);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 12px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--inactive);
+    cursor: pointer;
+    transition:
+        width 320ms ease,
+        background-color 240ms ease;
+}
+
+.dot.is-active {
+    width: 40px;
+    background: var(--primary);
+}
+
+.skip-button {
+    border: 0;
+    background: transparent;
+    color: var(--description);
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 200ms ease;
+}
+
+.skip-button:hover,
+.skip-button:focus-visible {
+    color: var(--primary);
+}
+
+.login-button {
+    position: absolute;
+    right: var(--side);
+    bottom: 134px;
+    left: var(--side);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 327px;
+    height: 48px;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #fff;
+    font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    isolation: isolate;
+}
+
+.login-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--button);
+    border-radius: 14px 10px 13px 9px / 12px 15px 11px 14px;
+    clip-path: path("M 10 2 C 58 0 106 3 160 1 C 218 0 270 3 317 1 C 324 1 327 6 326 13 L 324 37 C 324 44 321 47 313 46 C 257 45 211 48 160 46 C 108 44 66 49 11 46 C 4 46 1 42 2 36 L 4 12 C 3 6 5 3 10 2 Z");
+    transition: background-color 200ms ease;
+}
+
+.login-button:hover,
+.login-button:focus-visible,
+.login-button:active {
+    background: transparent;
+}
+
+.login-button:hover::before,
+.login-button:focus-visible::before,
+.login-button:active::before {
+    background: var(--primary);
+}
+
+.login-button:focus-visible {
+    outline: 2px solid rgb(255 90 32 / 35%);
+    outline-offset: 3px;
+}
+
+.login-button.is-shaking {
+    animation: shake 320ms ease;
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    35% {
+        transform: translateX(-5px);
+    }
+
+    70% {
+        transform: translateX(5px);
+    }
+}

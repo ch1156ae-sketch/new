@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UTBT 로딩 화면</title>
+        <link rel="stylesheet" href="./css/loading.css">
+    </head>
+    <body>
+        <main class="splash" aria-label="앱 로딩 화면">
+            <div class="brand-area">
+                <img
+                    class="brand-logo"
+                    src="./images/com logo2.png"
+                    width="183"
+                    height="194"
+                    alt="UTBT 로고"
+                />
+                <div
+                    class="loading"
+                    role="progressbar"
+                    aria-label="앱을 불러오는 중"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                >
+                    <span class="loading__fill"></span>
+                </div>
+            </div>
+        </main>
+        <script src="./js/loading.js"></script>
+    </body>
+</html>
