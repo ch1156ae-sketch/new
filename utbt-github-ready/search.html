@@ -1,0 +1,2176 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>검색 | UTBT</title>
+
+    <style>
+        @charset "UTF-8";
+
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+        :root {
+            --main: #ff5a20;
+            --text: #111827;
+            --muted: #6b7280;
+            --line: #ecedee;
+
+            --header-height: 64px;
+            --nav-height: 84px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-width: 375px;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+
+            background: #e9eaed;
+            color: var(--text);
+
+            font-family: "Pretendard", sans-serif;
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button,
+        input,
+        a {
+            color: inherit;
+            font: inherit;
+            font-family: inherit;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .app-shell {
+            position: relative;
+
+            width: 375px;
+            height: 812px;
+
+            flex: 0 0 375px;
+
+            overflow: hidden;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 28px rgba(24, 30, 39, .08);
+        }
+
+
+        /* =====================================================
+           SEARCH HEADER
+        ===================================================== */
+
+        .search-header {
+            position: absolute;
+            z-index: 50;
+
+            top: 0;
+            left: 0;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            height: var(--header-height);
+
+            padding: 8px 24px;
+
+            gap: 8px;
+
+            background: #ffffff;
+        }
+
+        .back-button {
+            display: grid;
+
+            width: 24px;
+            height: 48px;
+
+            flex: 0 0 24px;
+
+            place-items: center;
+
+            color: #6b7280;
+
+            background: transparent;
+
+            transition: color .2s ease;
+        }
+
+        .back-button svg {
+            display: block;
+
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .back-button:hover,
+        .back-button:focus-visible {
+            color: #ff5a20;
+        }
+
+
+        /* =====================================================
+           SEARCH BAR
+        ===================================================== */
+
+        .search-form {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            height: 48px;
+
+            padding: 0 16px 0 20px;
+
+            gap: 8px;
+
+            border-radius: 16px;
+
+            background: #ecedee;
+
+            transition:
+                background-color .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .search-box:focus-within {
+            background: #ecedee;
+
+            box-shadow:
+                inset 0 0 0 1px #ff5a20;
+        }
+
+        .search-input {
+            width: 100%;
+            min-width: 0;
+
+            border: 0;
+            outline: 0;
+
+            background: transparent;
+
+            color: #111827;
+
+            font-family: "Pretendard", sans-serif;
+
+            font-size: 16px;
+            line-height: 24px;
+
+            font-weight: 500;
+
+            caret-color: #ff5a20;
+        }
+
+        .search-input::-webkit-search-cancel-button {
+            display: none;
+        }
+
+        .search-input::placeholder {
+            color: #6b7280;
+
+            font-size: 16px;
+            line-height: 24px;
+
+            font-weight: 500;
+
+            opacity: 1;
+        }
+
+        .search-submit {
+            display: grid;
+
+            width: 24px;
+            height: 24px;
+
+            flex: 0 0 24px;
+
+            place-items: center;
+
+            background: transparent;
+
+            color: #6b7280;
+
+            transition: color .2s ease;
+        }
+
+        .search-submit svg {
+            display: block;
+
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .search-submit:hover,
+        .search-submit:focus-visible {
+            color: #ff5a20;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .search-main {
+            position: absolute;
+
+            top: var(--header-height);
+            right: 0;
+            bottom: var(--nav-height);
+            left: 0;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background: #ffffff;
+
+            scrollbar-width: none;
+        }
+
+        .search-main::-webkit-scrollbar {
+            display: none;
+        }
+
+        .search-content {
+            width: 100%;
+
+            padding: 24px 24px 40px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .keyword-section {
+            width: 100%;
+        }
+
+        .keyword-section + .keyword-section {
+            margin-top: 24px;
+        }
+
+        .section-title {
+            color: #111827;
+
+            font-size: 18px;
+            line-height: 24px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           RECENT
+        ===================================================== */
+
+        .section-heading {
+            display: flex;
+
+            width: 100%;
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recent-reset {
+            display: grid;
+
+            width: 16px;
+            height: 16px;
+
+            flex: 0 0 16px;
+
+            padding: 0;
+
+            place-items: center;
+
+            color: #6b7280;
+
+            background: transparent;
+
+            transition: color .2s ease;
+        }
+
+        .recent-reset svg {
+            display: block;
+
+            width: 16px;
+            height: 16px;
+
+            fill: none;
+
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .recent-reset:hover,
+        .recent-reset:focus-visible {
+            color: #ff5a20;
+        }
+
+        .recent-keywords {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            margin-top: 16px;
+
+            gap: 16px;
+        }
+
+        .recent-chip {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 34px;
+
+            padding: 6px 10px;
+
+            border: 1.5px solid #ffbba4;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #a6aab3;
+
+            font-size: 16px;
+            line-height: 20px;
+
+            font-weight: 500;
+
+            white-space: nowrap;
+
+            transition:
+                color .2s ease,
+                background-color .2s ease;
+        }
+
+        .recent-chip:hover,
+        .recent-chip:focus-visible {
+            color: #ff5a20;
+
+            background: #fff7f4;
+        }
+
+
+        /* =====================================================
+           RECOMMEND KEYWORDS
+        ===================================================== */
+
+        .recommend-viewport {
+            width: 100%;
+
+            margin-top: 16px;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            scrollbar-width: none;
+
+            -webkit-overflow-scrolling: touch;
+
+            touch-action: pan-x;
+
+            cursor: grab;
+
+            overscroll-behavior-inline: contain;
+        }
+
+        .recommend-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        .recommend-viewport.is-dragging {
+            cursor: grabbing;
+        }
+
+        .recommend-keywords {
+            display: flex;
+
+            width: max-content;
+
+            align-items: center;
+
+            padding-right: 24px;
+
+            gap: 8px;
+        }
+
+        .recommend-chip {
+            display: inline-flex;
+
+            min-width: max-content;
+            height: 42px;
+
+            flex: 0 0 auto;
+
+            padding: 0 12px;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 0;
+
+            background: #ffefe9;
+
+            color: #ff5a20;
+
+            font-size: 16px;
+            line-height: 20px;
+
+            font-weight: 500;
+
+            white-space: nowrap;
+
+            user-select: none;
+            -webkit-user-select: none;
+
+            -webkit-tap-highlight-color: transparent;
+
+            clip-path: polygon(
+                0% 10%,
+                10% 5%,
+                25% 8%,
+                42% 4%,
+                60% 8%,
+                78% 5%,
+                94% 9%,
+                100% 17%,
+                98% 82%,
+                90% 88%,
+                72% 86%,
+                55% 92%,
+                38% 86%,
+                20% 91%,
+                6% 86%,
+                0% 80%
+            );
+
+            transition:
+                color .2s ease,
+                background-color .2s ease;
+        }
+
+        .recommend-chip:hover,
+        .recommend-chip:focus-visible {
+            background: #ff5a20;
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           POPULAR KEYWORDS
+        ===================================================== */
+
+        .popular-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            width: 100%;
+
+            margin-top: 16px;
+
+            column-gap: 8px;
+            row-gap: 24px;
+        }
+
+        .popular-item {
+            display: flex;
+
+            width: 100%;
+            height: 36px;
+
+            padding: 8px 12px;
+
+            align-items: center;
+
+            gap: 16px;
+
+            border: 0;
+
+            border-bottom:
+                .5px solid #ff9f7e;
+
+            background: transparent;
+
+            text-align: left;
+        }
+
+        .popular-number {
+            display: inline-flex;
+
+            flex: 0 0 auto;
+
+            align-items: center;
+
+            color: #ff5a20;
+
+            font-size: 16px;
+            line-height: 20px;
+
+            font-weight: 500;
+        }
+
+        .popular-name {
+            display: block;
+
+            min-width: 0;
+
+            overflow: hidden;
+
+            color: #111827;
+
+            font-size: 16px;
+            line-height: 20px;
+
+            font-weight: 400;
+
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+
+            transition: color .2s ease;
+        }
+
+        .popular-item:hover .popular-name,
+        .popular-item:focus-visible .popular-name {
+            color: #ff5a20;
+        }
+
+
+        /* =====================================================
+           SCROLL TOP
+        ===================================================== */
+
+        .scroll-top-button {
+            position: absolute;
+
+            z-index: 55;
+
+            right: 24px;
+
+            bottom:
+                calc(var(--nav-height) + 16px);
+
+            display: grid;
+
+            width: 40px;
+            height: 40px;
+
+            place-items: center;
+
+            border: 1px solid #ecedee;
+
+            border-radius: 50%;
+
+            color: #6b7280;
+
+            background:
+                rgba(255,255,255,.97);
+
+            box-shadow:
+                0 4px 14px rgba(35,42,51,.12);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translateY(8px);
+
+            transition:
+                color .2s ease,
+                background-color .2s ease,
+                opacity .2s ease,
+                transform .2s ease;
+        }
+
+        .scroll-top-button svg {
+            display: block;
+
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .scroll-top-button.is-visible {
+            opacity: 1;
+
+            pointer-events: auto;
+
+            transform:
+                translateY(0);
+        }
+
+        .scroll-top-button:hover,
+        .scroll-top-button:focus-visible {
+            color: var(--main);
+
+            background: #fff5f1;
+        }
+
+
+        /* =====================================================
+           BOTTOM NAV
+        ===================================================== */
+
+        .bottom-nav {
+            position: absolute;
+
+            z-index: 60;
+
+            bottom: 0;
+            left: 0;
+
+            display: flex;
+
+            width: 375px;
+            height: var(--nav-height);
+
+            padding: 0 24px;
+
+            align-items: stretch;
+            justify-content: center;
+
+            gap: 50px;
+
+            border-top:
+                1px solid #eceef1;
+
+            background:
+                rgba(255,255,255,.97);
+
+            box-shadow:
+                0 -5px 16px rgba(35,42,51,.035);
+
+            backdrop-filter:
+                blur(12px);
+        }
+
+        .nav-item {
+            display: flex;
+
+            width: 24px;
+
+            flex: 0 0 24px;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 0;
+
+            color: #6b7280;
+
+            background: transparent;
+
+            font-family: "Pretendard", sans-serif;
+
+            font-size: 10px;
+
+            font-weight: 500;
+
+            white-space: nowrap;
+
+            transition: color .2s ease;
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            transition:
+                fill .2s ease,
+                stroke .2s ease;
+        }
+
+        .nav-item svg .nav-icon-solid {
+            fill: currentColor;
+
+            stroke: none;
+        }
+
+        .nav-item.is-active {
+            color: var(--main);
+        }
+
+        .nav-item.is-active svg {
+            fill: currentColor;
+
+            stroke: currentColor;
+        }
+
+        .nav-item:hover,
+        .nav-item:focus-visible {
+            color: var(--main);
+        }
+
+        .nav-item:hover svg,
+        .nav-item:focus-visible svg {
+            fill: currentColor;
+
+            stroke: currentColor;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: absolute;
+
+            z-index: 100;
+
+            bottom:
+                calc(var(--nav-height) + 12px);
+
+            left: 50%;
+
+            max-width:
+                calc(100% - 48px);
+
+            padding: 10px 14px;
+
+            transform:
+                translate(-50%, 10px);
+
+            border-radius: 20px;
+
+            background:
+                rgba(37, 40, 46, .92);
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            white-space: nowrap;
+
+            transition:
+                opacity .2s ease,
+                transform .2s ease;
+        }
+
+        .toast.is-visible {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+
+        /* =====================================================
+           ACCESSIBILITY
+        ===================================================== */
+
+        button:focus-visible,
+        a:focus-visible {
+            outline:
+                3px solid rgba(255,90,32,.3);
+
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior:
+                    auto !important;
+
+                transition-duration:
+                    .01ms !important;
+
+                animation-duration:
+                    .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="app-shell">
+
+
+        <!-- SEARCH HEADER -->
+
+        <header class="search-header">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton"
+                aria-label="뒤로가기"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path d="M15 5L8 12L15 19" />
+                </svg>
+
+            </button>
+
+
+            <form
+                class="search-form"
+                id="searchForm"
+            >
+
+                <div class="search-box">
+
+                    <input
+                        type="search"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="검색어를 입력해주세요"
+                        autocomplete="off"
+                        aria-label="검색어 입력"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="search-submit"
+                        aria-label="검색"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+
+                            <circle
+                                cx="10.5"
+                                cy="10.5"
+                                r="6.5"
+                            />
+
+                            <path
+                                d="M15.5 15.5L20 20"
+                            />
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </header>
+
+
+
+        <!-- MAIN -->
+
+        <main class="search-main">
+
+            <div class="search-content">
+
+
+                <!-- 최근 키워드 -->
+
+                <section
+                    class="keyword-section"
+                    aria-labelledby="recentTitle"
+                >
+
+                    <div class="section-heading">
+
+                        <h2
+                            class="section-title"
+                            id="recentTitle"
+                        >
+                            최근 키워드
+                        </h2>
+
+
+                        <button
+                            type="button"
+                            class="recent-reset"
+                            id="recentReset"
+                            aria-label="최근 키워드 초기화"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+
+                                <path d="M20 6V11H15" />
+
+                                <path
+                                    d="M18.49 8.51A8 8 0 1 0 19.65 15"
+                                />
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="recent-keywords"
+                        id="recentKeywords"
+                    ></div>
+
+                </section>
+
+
+
+                <!-- 추천 키워드 -->
+
+                <section
+                    class="keyword-section"
+                    aria-labelledby="recommendTitle"
+                >
+
+                    <h2
+                        class="section-title"
+                        id="recommendTitle"
+                    >
+                        추천 키워드
+                    </h2>
+
+
+                    <div
+                        class="recommend-viewport"
+                        id="recommendViewport"
+                    >
+
+                        <div class="recommend-keywords">
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="주스용사과"
+                            >
+                                주스용사과
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="한입고구마"
+                            >
+                                한입고구마
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="당근라페용"
+                            >
+                                당근라페용
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="못난이 배"
+                            >
+                                못난이 배
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="알뜰 사과"
+                            >
+                                알뜰 사과
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="꼬마 감자"
+                            >
+                                꼬마 감자
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="파지 치즈"
+                            >
+                                파지 치즈
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="recommend-chip"
+                                data-keyword="못난이 토마토"
+                            >
+                                못난이 토마토
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- 인기 키워드 -->
+
+                <section
+                    class="keyword-section"
+                    aria-labelledby="popularTitle"
+                >
+
+                    <h2
+                        class="section-title"
+                        id="popularTitle"
+                    >
+                        인기 키워드
+                    </h2>
+
+
+                    <div class="popular-list">
+
+
+                        <button
+                            type="button"
+                            class="popular-item"
+                            data-keyword="파지 치즈"
+                        >
+
+                            <span class="popular-number">
+                                1
+                            </span>
+
+                            <span class="popular-name">
+                                파지 치즈
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="popular-item"
+                            data-keyword="못난이 당근"
+                        >
+
+                            <span class="popular-number">
+                                2
+                            </span>
+
+                            <span class="popular-name">
+                                못난이 당근
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="popular-item"
+                            data-keyword="한입 고구마"
+                        >
+
+                            <span class="popular-number">
+                                3
+                            </span>
+
+                            <span class="popular-name">
+                                한입 고구마
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="popular-item"
+                            data-keyword="꼬마 파프리카"
+                        >
+
+                            <span class="popular-number">
+                                4
+                            </span>
+
+                            <span class="popular-name">
+                                꼬마 파프리카
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+        </main>
+
+
+
+        <!-- SCROLL TOP -->
+
+        <button
+            class="scroll-top-button"
+            type="button"
+            aria-label="검색 화면 맨 위로 이동"
+            aria-hidden="true"
+            tabindex="-1"
+        >
+
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M6.5 14.5 12 9l5.5 5.5"
+                />
+            </svg>
+
+        </button>
+
+
+
+        <!-- BOTTOM NAV -->
+
+        <nav
+            class="bottom-nav"
+            aria-label="하단 메뉴"
+        >
+
+
+            <a
+                class="nav-item"
+                href="index.html"
+            >
+
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M12.7451 4.49609V4.49707L12.75 4.5L18.75 9L18.7568 9.00488C18.9086 9.11625 19.0273 9.25715 19.1172 9.43652C19.2066 9.61497 19.2504 9.79893 19.25 9.99805V19C19.25 19.3493 19.1344 19.6302 18.8818 19.8828C18.6293 20.1354 18.349 20.2504 18.001 20.25H15C14.906 20.25 14.863 20.2264 14.8193 20.1826C14.7855 20.1487 14.7638 20.1149 14.7549 20.0605L14.75 19.998V15C14.75 14.5274 14.5814 14.0958 14.2412 13.7568C13.9026 13.4194 13.4729 13.2512 13.002 13.25H11C10.5274 13.25 10.0958 13.4186 9.75684 13.7588C9.41941 14.0974 9.25115 14.5271 9.25 14.998V20C9.25 20.0941 9.22631 20.1379 9.18164 20.1826C9.13708 20.2272 9.0941 20.2502 9.00195 20.25H6C5.6503 20.25 5.36983 20.1345 5.11816 19.8828C4.89805 19.6627 4.78191 19.42 4.75586 19.1279L4.75 18.999V10C4.75 9.80021 4.79411 9.61556 4.88379 9.43652C4.97398 9.25657 5.09271 9.11525 5.24414 9.00391L5.25 9L11.25 4.5L11.2549 4.49609C11.471 4.33159 11.7104 4.25 12 4.25C12.2896 4.25 12.529 4.33159 12.7451 4.49609Z"
+                        stroke-width="1.5"
+                    />
+
+                </svg>
+
+                <span>홈</span>
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="category.html"
+                aria-label="카테고리 페이지로 이동"
+            >
+
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M4 13.75H10C10.0663 13.75 10.1299 13.7764 10.1768 13.8232C10.2236 13.8701 10.25 13.9337 10.25 14V20C10.25 20.0663 10.2236 20.1299 10.1768 20.1768C10.1299 20.2236 10.0663 20.25 10 20.25H4C3.93369 20.25 3.87013 20.2236 3.82324 20.1768C3.77636 20.1299 3.75 20.0663 3.75 20V14C3.75 13.9337 3.77636 13.8701 3.82324 13.8232C3.87013 13.7764 3.9337 13.75 4 13.75ZM17 13.75C18.7918 13.75 20.25 15.2082 20.25 17C20.25 18.7918 18.7918 20.25 17 20.25C15.2082 20.25 13.75 18.7918 13.75 17C13.75 15.2082 15.2082 13.75 17 13.75ZM4 3.75H10C10.0663 3.75 10.1299 3.77636 10.1768 3.82324C10.2236 3.87013 10.25 3.9337 10.25 4V10C10.25 10.0663 10.2236 10.1299 10.1768 10.1768C10.1299 10.2236 10.0663 10.25 10 10.25H4C3.9337 10.25 3.87013 10.2236 3.82324 10.1768C3.77636 10.1299 3.75 10.0663 3.75 10V4C3.75 3.9337 3.77636 3.87013 3.82324 3.82324C3.87013 3.77636 3.9337 3.75 4 3.75ZM14 3.75H20C20.0663 3.75 20.1299 3.77636 20.1768 3.82324C20.2236 3.87013 20.25 3.93369 20.25 4V10C20.25 10.0663 20.2236 10.1299 20.1768 10.1768C20.1299 10.2236 20.0663 10.25 20 10.25H14C13.9337 10.25 13.8701 10.2236 13.8232 10.1768C13.7764 10.1299 13.75 10.0663 13.75 10V4C13.75 3.9337 13.7764 3.87013 13.8232 3.82324C13.8701 3.77636 13.9337 3.75 14 3.75Z"
+                        stroke-width="1.5"
+                    />
+
+                </svg>
+
+                <span>카테고리</span>
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="recommend.html"
+                aria-label="추천 페이지로 이동"
+            >
+
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M11.9998 2.75C12.1136 2.75 12.3146 2.79441 12.7078 3.30762C13.1015 3.82174 13.5464 4.61546 14.1921 5.77344L14.5203 6.36133C14.8476 6.94867 15.1066 7.44513 15.5408 7.77539C15.9804 8.10978 16.5244 8.21618 17.1589 8.35938L17.7957 8.50391C19.051 8.78814 19.9052 8.98336 20.49 9.21387C21.0583 9.43795 21.1799 9.62178 21.2263 9.76953V9.77051C21.2746 9.9259 21.2767 10.1647 20.9353 10.707C20.6756 11.1196 20.2819 11.6088 19.741 12.249L19.1501 12.9424L18.7166 13.4492L18.7156 13.4502C18.3352 13.8953 18.0043 14.2647 17.8181 14.7021L17.7478 14.8945C17.6262 15.2866 17.6336 15.6947 17.6726 16.1611L17.7185 16.6494L17.7849 17.3271C17.9137 18.6593 17.9999 19.5766 17.9705 20.2373C17.9411 20.896 17.8025 21.0782 17.6921 21.1621C17.5936 21.2368 17.4105 21.3194 16.8171 21.1494C16.2144 20.9767 15.4135 20.6101 14.239 20.0693H14.238L13.6404 19.7949C13.0487 19.5217 12.5491 19.2754 11.9998 19.2754C11.4498 19.2755 10.9497 19.5223 10.3572 19.7959L9.76245 20.0693C8.58711 20.6103 7.78537 20.9775 7.18237 21.1504C6.66323 21.2992 6.45878 21.2545 6.35034 21.1914L6.30933 21.1631C6.19809 21.0786 6.05853 20.8961 6.02905 20.2373C5.99951 19.5766 6.08679 18.6593 6.21558 17.3271L6.28101 16.6504H6.28198C6.33965 16.0545 6.39787 15.5566 6.30151 15.0908L6.25073 14.8936C6.08769 14.3671 5.7167 13.9568 5.28296 13.4502L4.85034 12.9424L4.25952 12.249C3.71845 11.6089 3.32491 11.1197 3.06519 10.707C2.7242 10.1653 2.72481 9.92667 2.77319 9.77051C2.81892 9.62316 2.93949 9.43895 3.5105 9.21387C4.09561 8.98326 4.95044 8.78764 6.20581 8.50391L6.84155 8.35938C7.47641 8.21588 8.01764 8.109 8.45776 7.77539C8.78494 7.52739 9.01283 7.18584 9.2439 6.7832L9.48022 6.36133L9.80835 5.77344C10.4541 4.61547 10.898 3.82173 11.2917 3.30762C11.6847 2.79454 11.8859 2.75006 11.9998 2.75Z"
+                        stroke-width="1.5"
+                    />
+
+                </svg>
+
+                <span>추천</span>
+
+            </a>
+
+
+            <a
+                class="nav-item is-active"
+                href="search.html"
+                aria-current="page"
+                aria-label="검색 페이지로 이동"
+            >
+
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        class="nav-icon-solid"
+                        d="M10.3331 3.04016C14.2169 3.04016 17.3652 6.18864 17.3654 10.0724C17.3654 11.8771 16.684 13.5217 15.5665 14.7667L20.4796 19.6798C20.7722 19.9727 20.7724 20.4476 20.4796 20.7404C20.1868 21.0331 19.712 21.0329 19.4191 20.7404L14.4503 15.7716C13.2928 16.6093 11.8712 17.1046 10.3331 17.1046C6.44932 17.1045 3.3009 13.9562 3.3009 10.0724C3.30105 6.18869 6.44942 3.04024 10.3331 3.04016ZM10.3331 4.54016C7.27784 4.54024 4.80105 7.01712 4.8009 10.0724C4.8009 13.1278 7.27775 15.6045 10.3331 15.6046C13.3886 15.6046 15.8654 13.1278 15.8654 10.0724C15.8652 7.01707 13.3885 4.54016 10.3331 4.54016Z"
+                    />
+
+                </svg>
+
+                <span>검색</span>
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="mypage.html"
+                aria-label="마이페이지로 이동"
+            >
+
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        d="M12 13.5C15.5199 13.5 19.0356 15.6912 19.4678 20.0693L19.5 20.5C17.5698 20.5983 9.00655 20.6615 5.19534 20.5293L4.50003 20.5C4.73747 15.8358 8.36662 13.5 12 13.5ZM12 4.5C12.7957 4.50001 13.5585 4.81631 14.1211 5.37891C14.6837 5.94151 15 6.70436 15 7.5C15 8.29564 14.6837 9.05849 14.1211 9.62109C13.5585 10.1837 12.7957 10.5 12 10.5C11.2044 10.5 10.4415 10.1837 9.87894 9.62109C9.31633 9.05848 9.00003 8.29565 9.00003 7.5C9.00003 6.70435 9.31633 5.94152 9.87894 5.37891C10.4415 4.81631 11.2044 4.5 12 4.5Z"
+                        stroke-width="1.5"
+                    />
+
+                </svg>
+
+                <span>마이페이지</span>
+
+            </a>
+
+
+        </nav>
+
+
+
+        <div
+            class="toast"
+            id="toast"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+
+    </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const STORAGE_KEY =
+                "utbtRecentKeywords_v3";
+
+
+            const searchForm =
+                document.getElementById("searchForm");
+
+            const searchInput =
+                document.getElementById("searchInput");
+
+            const recentKeywordsContainer =
+                document.getElementById("recentKeywords");
+
+            const recentReset =
+                document.getElementById("recentReset");
+
+            const recommendViewport =
+                document.getElementById("recommendViewport");
+
+            const backButton =
+                document.getElementById("backButton");
+
+            const toast =
+                document.getElementById("toast");
+
+            const mainScroll =
+                document.querySelector(".search-main");
+
+            const scrollTopButton =
+                document.querySelector(
+                    ".scroll-top-button"
+                );
+
+
+
+            /* =================================================
+               기본 최근 키워드
+            ================================================= */
+
+            const defaultRecentKeywords = [
+                "무농약 브로콜리",
+                "세척당근 5kg",
+                "대파 파지",
+                "파지 치즈",
+                "스테비아 방울토마토"
+            ];
+
+
+
+            /* =================================================
+               LOAD
+            ================================================= */
+
+            const loadRecentKeywords = () => {
+
+                try {
+
+                    const saved =
+                        localStorage.getItem(
+                            STORAGE_KEY
+                        );
+
+
+                    if (saved === null) {
+
+                        return [
+                            ...defaultRecentKeywords
+                        ];
+
+                    }
+
+
+                    const parsed =
+                        JSON.parse(saved);
+
+
+                    if (Array.isArray(parsed)) {
+
+                        return parsed;
+
+                    }
+
+                } catch (error) {
+
+                    console.warn(
+                        "최근 검색어 로드 실패",
+                        error
+                    );
+
+                }
+
+
+                return [
+                    ...defaultRecentKeywords
+                ];
+
+            };
+
+
+            let recentKeywords =
+                loadRecentKeywords();
+
+
+
+            /* =================================================
+               SAVE
+            ================================================= */
+
+            const saveRecentKeywords = () => {
+
+                try {
+
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify(
+                            recentKeywords
+                        )
+                    );
+
+                } catch (error) {
+
+                    console.warn(
+                        "최근 검색어 저장 실패",
+                        error
+                    );
+
+                }
+
+            };
+
+
+
+            /* =================================================
+               TOAST
+            ================================================= */
+
+            let toastTimer = null;
+
+
+            const showToast = message => {
+
+                clearTimeout(
+                    toastTimer
+                );
+
+
+                toast.textContent =
+                    message;
+
+
+                toast.classList.add(
+                    "is-visible"
+                );
+
+
+                toastTimer =
+                    setTimeout(() => {
+
+                        toast.classList.remove(
+                            "is-visible"
+                        );
+
+                    }, 1500);
+
+            };
+
+
+
+            /* =================================================
+               검색바 값 입력
+            ================================================= */
+
+            const setSearchInput = keyword => {
+
+                const value =
+                    String(keyword || "")
+                        .trim();
+
+
+                if (!value) {
+                    return;
+                }
+
+
+                /*
+                    추천 / 인기 모두
+                    실제 input value에 직접 입력
+                */
+                searchInput.value =
+                    value;
+
+
+                searchInput.focus();
+
+
+                const length =
+                    searchInput.value.length;
+
+
+                try {
+
+                    searchInput.setSelectionRange(
+                        length,
+                        length
+                    );
+
+                } catch (error) {}
+
+            };
+
+
+
+            /* =================================================
+               최근 키워드 출력
+            ================================================= */
+
+            const renderRecentKeywords = () => {
+
+                recentKeywordsContainer.innerHTML =
+                    "";
+
+
+                recentKeywords.forEach(
+                    keyword => {
+
+                        const button =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        button.type =
+                            "button";
+
+                        button.className =
+                            "recent-chip";
+
+                        button.textContent =
+                            keyword;
+
+                        button.dataset.keyword =
+                            keyword;
+
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                setSearchInput(
+                                    keyword
+                                );
+
+                            }
+                        );
+
+
+                        recentKeywordsContainer
+                            .appendChild(
+                                button
+                            );
+
+                    }
+                );
+
+            };
+
+
+
+            /* =================================================
+               최근 키워드 추가
+            ================================================= */
+
+            const addRecentKeyword = keyword => {
+
+                const value =
+                    String(keyword || "")
+                        .trim();
+
+
+                if (!value) {
+                    return;
+                }
+
+
+                /*
+                    같은 키워드는 중복 생성하지 않고
+                    기존 위치에서 제거
+                */
+                recentKeywords =
+                    recentKeywords.filter(
+                        item =>
+                            item !== value
+                    );
+
+
+                /*
+                    최신 검색어를 맨 앞으로
+                */
+                recentKeywords.unshift(
+                    value
+                );
+
+
+                recentKeywords =
+                    recentKeywords.slice(
+                        0,
+                        8
+                    );
+
+
+                saveRecentKeywords();
+
+                renderRecentKeywords();
+
+            };
+
+
+
+            /* =================================================
+               키워드 선택 공통 함수
+
+               추천 키워드 / 인기 키워드
+               완전히 동일하게 동작
+            ================================================= */
+
+            const selectKeyword = keyword => {
+
+                const value =
+                    String(keyword || "")
+                        .trim();
+
+
+                if (!value) {
+                    return;
+                }
+
+
+                /*
+                    1. 검색바에 자동 입력
+                */
+                setSearchInput(
+                    value
+                );
+
+
+                /*
+                    2. 최근 키워드에 즉시 추가
+                */
+                addRecentKeyword(
+                    value
+                );
+
+            };
+
+
+
+            /* =================================================
+               직접 검색
+            ================================================= */
+
+            searchForm.addEventListener(
+                "submit",
+                event => {
+
+                    event.preventDefault();
+
+
+                    const value =
+                        searchInput.value.trim();
+
+
+                    if (!value) {
+
+                        searchInput.focus();
+
+                        return;
+
+                    }
+
+
+                    setSearchInput(
+                        value
+                    );
+
+
+                    addRecentKeyword(
+                        value
+                    );
+
+
+                    showToast(
+                        `'${value}' 검색`
+                    );
+
+                }
+            );
+
+
+
+            /* =================================================
+               인기 키워드 선택
+            ================================================= */
+
+            document
+                .querySelectorAll(
+                    ".popular-item"
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            selectKeyword(
+                                button.dataset.keyword
+                            );
+
+                        }
+                    );
+
+                });
+
+
+
+            /* =================================================
+               추천 키워드 선택
+
+               인기 키워드와 같은
+               selectKeyword() 함수 사용
+            ================================================= */
+
+            document
+                .querySelectorAll(
+                    ".recommend-chip"
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            selectKeyword(
+                                button.dataset.keyword
+                            );
+
+                        }
+                    );
+
+                });
+
+
+
+            /* =================================================
+               초기화
+            ================================================= */
+
+            recentReset.addEventListener(
+                "click",
+                () => {
+
+                    recentKeywords = [];
+
+
+                    saveRecentKeywords();
+
+
+                    renderRecentKeywords();
+
+
+                    showToast(
+                        "최근 검색어를 초기화했습니다."
+                    );
+
+                }
+            );
+
+
+
+            /* =================================================
+               올라가기 버튼
+               40px 이상 스크롤 시 표시
+            ================================================= */
+
+            function scrollSearchToTop() {
+
+                const reduceMotion =
+                    window.matchMedia(
+                        "(prefers-reduced-motion: reduce)"
+                    ).matches;
+
+
+                mainScroll.scrollTo({
+                    top: 0,
+                    behavior:
+                        reduceMotion
+                            ? "auto"
+                            : "smooth"
+                });
+
+            }
+
+
+            scrollTopButton.addEventListener(
+                "click",
+                scrollSearchToTop
+            );
+
+
+            function updateScrollTopButton() {
+
+                const isVisible =
+                    mainScroll.scrollTop > 40;
+
+
+                scrollTopButton.classList.toggle(
+                    "is-visible",
+                    isVisible
+                );
+
+
+                scrollTopButton.setAttribute(
+                    "aria-hidden",
+                    String(!isVisible)
+                );
+
+
+                scrollTopButton.tabIndex =
+                    isVisible
+                        ? 0
+                        : -1;
+
+            }
+
+
+            mainScroll.addEventListener(
+                "scroll",
+                updateScrollTopButton,
+                {
+                    passive: true
+                }
+            );
+
+
+            updateScrollTopButton();
+
+
+
+            /* =================================================
+               추천 키워드 마우스 드래그
+
+               핵심 수정:
+               pointerdown에서 바로 capture 하지 않음.
+
+               4px 이상 실제로 움직인 경우에만
+               capture + drag 상태 시작.
+
+               그래서 일반 클릭은
+               recommend-chip에 정상 전달됨.
+            ================================================= */
+
+            let recommendPointerDown = false;
+
+            let recommendDragging = false;
+
+            let recommendMoved = false;
+
+            let recommendStartX = 0;
+
+            let recommendStartScrollLeft = 0;
+
+
+            recommendViewport.addEventListener(
+                "pointerdown",
+                event => {
+
+                    /*
+                        마우스 왼쪽 버튼만
+                        커스텀 드래그 처리.
+
+                        모바일 터치는 브라우저 기본
+                        가로 스와이프 사용.
+                    */
+                    if (
+                        event.pointerType !== "mouse"
+                        ||
+                        event.button !== 0
+                    ) {
+                        return;
+                    }
+
+
+                    recommendPointerDown = true;
+
+                    recommendDragging = false;
+
+                    recommendMoved = false;
+
+
+                    recommendStartX =
+                        event.clientX;
+
+
+                    recommendStartScrollLeft =
+                        recommendViewport.scrollLeft;
+
+                }
+            );
+
+
+            recommendViewport.addEventListener(
+                "pointermove",
+                event => {
+
+                    if (!recommendPointerDown) {
+                        return;
+                    }
+
+
+                    const distance =
+                        event.clientX -
+                        recommendStartX;
+
+
+                    /*
+                        4px 미만은 일반 클릭으로 유지
+                    */
+                    if (
+                        !recommendDragging
+                        &&
+                        Math.abs(distance) > 4
+                    ) {
+
+                        recommendDragging = true;
+
+                        recommendMoved = true;
+
+
+                        recommendViewport.classList.add(
+                            "is-dragging"
+                        );
+
+
+                        /*
+                            실제 드래그가 시작된 뒤에만
+                            pointer capture
+                        */
+                        recommendViewport
+                            .setPointerCapture(
+                                event.pointerId
+                            );
+
+                    }
+
+
+                    if (!recommendDragging) {
+                        return;
+                    }
+
+
+                    recommendViewport.scrollLeft =
+                        recommendStartScrollLeft -
+                        distance;
+
+                }
+            );
+
+
+            const stopRecommendDrag =
+                event => {
+
+                    recommendPointerDown = false;
+
+
+                    if (!recommendDragging) {
+                        return;
+                    }
+
+
+                    recommendDragging = false;
+
+
+                    recommendViewport.classList.remove(
+                        "is-dragging"
+                    );
+
+
+                    if (
+                        recommendViewport
+                            .hasPointerCapture(
+                                event.pointerId
+                            )
+                    ) {
+
+                        recommendViewport
+                            .releasePointerCapture(
+                                event.pointerId
+                            );
+
+                    }
+
+                };
+
+
+            recommendViewport.addEventListener(
+                "pointerup",
+                stopRecommendDrag
+            );
+
+
+            recommendViewport.addEventListener(
+                "pointercancel",
+                stopRecommendDrag
+            );
+
+
+
+            /* =================================================
+               실제 드래그 뒤 발생하는 클릭만 차단
+
+               그냥 눌렀을 경우는 차단하지 않음
+               → 추천 키워드 자동 입력 정상 작동
+            ================================================= */
+
+            recommendViewport.addEventListener(
+                "click",
+                event => {
+
+                    if (!recommendMoved) {
+                        return;
+                    }
+
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    recommendMoved = false;
+
+                },
+                true
+            );
+
+
+
+            /* =================================================
+               마우스 휠 좌우 이동
+            ================================================= */
+
+            recommendViewport.addEventListener(
+                "wheel",
+                event => {
+
+                    if (
+                        Math.abs(event.deltaY) >
+                        Math.abs(event.deltaX)
+                    ) {
+
+                        event.preventDefault();
+
+
+                        recommendViewport.scrollLeft +=
+                            event.deltaY;
+
+                    }
+
+                },
+                {
+                    passive: false
+                }
+            );
+
+
+
+            /* =================================================
+               뒤로가기
+            ================================================= */
+
+            backButton.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        window.history.length > 1
+                    ) {
+
+                        window.history.back();
+
+                    } else {
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+
+                }
+            );
+
+
+
+            /* 최초 출력 */
+
+            renderRecentKeywords();
+
+        });
+    </script>
+
+</body>
+
+</html>

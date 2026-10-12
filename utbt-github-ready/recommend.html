@@ -1,0 +1,1701 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>추천 | UTBT</title>
+
+    <style>
+        @charset "UTF-8";
+
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+        :root {
+            --main: #ff5a20;
+            --text: #292c33;
+            --surface: #f5f6f9;
+
+            --nav-height: 84px;
+            --header-height: 64px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-width: 375px;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+
+            background: #e9eaed;
+            color: var(--text);
+
+            font-family: "Pretendard", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button,
+        a {
+            color: inherit;
+            font: inherit;
+            font-family: inherit;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+        }
+
+        /* ========================================
+           APP
+        ======================================== */
+
+        .app-shell {
+            position: relative;
+
+            width: 375px;
+            height: 812px;
+            flex: 0 0 375px;
+
+            overflow: hidden;
+
+            background: var(--surface);
+
+            box-shadow: 0 0 28px rgba(24, 30, 39, 0.08);
+        }
+
+        /* ========================================
+           HEADER
+        ======================================== */
+
+        .app-header {
+            position: absolute;
+            z-index: 50;
+
+            top: 0;
+            left: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            width: 100%;
+            height: var(--header-height);
+
+            padding: 20px 24px;
+
+            background: #fbfbfb;
+
+            box-shadow: inset 0 -1px 0 #ecedee;
+        }
+
+        .app-header h1 {
+            color: #111827;
+
+            font-size: 22px;
+            font-weight: 500;
+
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            height: 24px;
+        }
+
+        .icon-button {
+            display: grid;
+
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+
+            place-items: center;
+
+            background: transparent;
+        }
+
+        .header-icon {
+            display: block;
+
+            width: 24px;
+            height: 24px;
+
+            color: #6b7280;
+
+            transition: color 0.2s;
+        }
+
+        .alarm-icon path {
+            fill: transparent;
+
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            transition:
+                fill 0.2s,
+                stroke 0.2s;
+        }
+
+        .bag-icon .bag-outline {
+            fill: currentColor;
+
+            transition: opacity 0.2s;
+        }
+
+        .bag-icon .bag-fill {
+            fill: currentColor;
+
+            opacity: 0;
+
+            transition: opacity 0.2s;
+        }
+
+        .icon-button:hover .header-icon {
+            color: #ff5a20;
+        }
+
+        .icon-button:hover .alarm-icon path {
+            fill: currentColor;
+        }
+
+        .icon-button:hover .bag-fill {
+            opacity: 1;
+        }
+
+        /* ========================================
+           MAIN
+        ======================================== */
+
+        .main {
+            position: absolute;
+
+            top: var(--header-height);
+            right: 0;
+            bottom: var(--nav-height);
+            left: 0;
+
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            background: #f1f2f4;
+
+            scrollbar-width: none;
+
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .main::-webkit-scrollbar,
+        .horizontal-row::-webkit-scrollbar,
+        .recipe-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content {
+            padding: 24px 0 40px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ========================================
+           TITLE
+        ======================================== */
+
+        .section-title {
+            margin-bottom: 16px;
+
+            padding: 0 24px;
+
+            color: #111827;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.4;
+
+            letter-spacing: -0.3px;
+        }
+
+        .personal-name {
+            color: #2d7065;
+        }
+
+        .personal-text {
+            color: #111827;
+        }
+
+        /* ========================================
+           PRODUCT ROW
+        ======================================== */
+
+        .horizontal-row {
+            display: flex;
+
+            gap: 10px;
+
+            padding: 0 24px;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            scrollbar-width: none;
+
+            -webkit-overflow-scrolling: touch;
+
+            cursor: grab;
+
+            user-select: none;
+        }
+
+        .horizontal-row.is-dragging,
+        .recipe-row.is-dragging {
+            cursor: grabbing;
+        }
+
+        /* ========================================
+           PRODUCT CARD
+        ======================================== */
+
+        .product-card {
+            display: flex;
+
+            width: 280px;
+            height: 112px;
+            flex: 0 0 280px;
+
+            align-items: center;
+
+            gap: 24px;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+        }
+
+        .product-img {
+            width: 96px;
+            height: 96px;
+
+            flex: 0 0 96px;
+
+            border-radius: 8px;
+
+            object-fit: cover;
+
+            background: #dddddd;
+
+            pointer-events: none;
+        }
+
+        .product-info {
+            display: flex;
+
+            min-width: 0;
+            height: 96px;
+
+            flex: 1;
+
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .product-name {
+            width: 100%;
+
+            overflow: hidden;
+
+            color: #111827;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.35;
+
+            letter-spacing: -0.3px;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-price {
+            margin-top: 4px;
+
+            color: #111827;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .add-button {
+            display: flex;
+
+            width: 44px;
+            height: 24px;
+
+            margin-top: 8px;
+
+            padding: 0 10px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #ffefe9;
+
+            color: #ff5a20;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1;
+
+            white-space: nowrap;
+        }
+
+        .add-button.is-added {
+            color: #ffffff;
+
+            background: #ff5a20;
+        }
+
+        /* ========================================
+           오늘 뭐먹지
+        ======================================== */
+
+        .recipe-row {
+            display: flex;
+
+            gap: 8px;
+
+            padding: 0 24px;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            scrollbar-width: none;
+
+            -webkit-overflow-scrolling: touch;
+
+            cursor: grab;
+
+            user-select: none;
+        }
+
+        .recipe-card {
+            width: 142px;
+            flex: 0 0 142px;
+        }
+
+        .recipe-img {
+            width: 142px;
+            height: 253px;
+
+            border-radius: 8px;
+
+            object-fit: cover;
+
+            background: #e4d3a5;
+
+            pointer-events: none;
+        }
+
+        .recipe-info {
+            display: flex;
+
+            width: 142px;
+
+            margin-top: 20px;
+
+            flex-direction: column;
+            align-items: center;
+
+            gap: 4px;
+
+            text-align: center;
+        }
+
+        .recipe-name {
+            width: 100%;
+
+            color: #111827;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.4;
+
+            letter-spacing: -0.2px;
+
+            text-align: center;
+        }
+
+        .recipe-label {
+            width: 100%;
+
+            color: #ff5a20;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.4;
+
+            text-align: center;
+        }
+
+        .recipe-detail {
+            width: 100%;
+
+            color: #6b7280;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.4;
+
+            text-align: center;
+        }
+
+        /* ========================================
+           위로가기 버튼
+           홈 페이지와 동일
+        ======================================== */
+
+        .scroll-top-button {
+            position: absolute;
+            z-index: 55;
+
+            right: 24px;
+            bottom: calc(var(--nav-height) + 16px);
+
+            display: grid;
+
+            width: 40px;
+            height: 40px;
+
+            place-items: center;
+
+            border: 1px solid #ecedee;
+            border-radius: 50%;
+
+            color: #6b7280;
+
+            background: rgba(255,255,255,.97);
+
+            box-shadow: 0 4px 14px rgba(35,42,51,.12);
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform: translateY(8px);
+
+            transition:
+                color .2s ease,
+                background-color .2s ease,
+                opacity .2s ease,
+                transform .2s ease;
+        }
+
+        .scroll-top-button svg {
+            display: block;
+
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .scroll-top-button.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+
+            transform: translateY(0);
+        }
+
+        .scroll-top-button:hover,
+        .scroll-top-button:focus-visible {
+            color: var(--main);
+
+            background: #fff5f1;
+        }
+
+        /* ========================================
+           BOTTOM NAV
+        ======================================== */
+
+        .bottom-nav {
+            position: absolute;
+            z-index: 60;
+
+            bottom: 0;
+            left: 0;
+
+            display: flex;
+
+            width: 375px;
+            height: var(--nav-height);
+
+            padding: 0 24px;
+
+            align-items: stretch;
+            justify-content: center;
+
+            gap: 50px;
+
+            border-top: 1px solid #eceef1;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            box-shadow: 0 -5px 16px rgba(35, 42, 51, 0.035);
+
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-item {
+            display: flex;
+
+            width: 24px;
+            flex: 0 0 24px;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 0;
+
+            color: #6b7280;
+
+            background: transparent;
+
+            font-family: "Pretendard", sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+
+            white-space: nowrap;
+
+            transition: color 0.2s ease;
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            transition:
+                fill 0.2s ease,
+                stroke 0.2s ease;
+        }
+
+        .nav-item svg .nav-icon-solid {
+            fill: currentColor;
+            stroke: none;
+        }
+
+        .nav-item.is-active {
+            color: var(--main);
+        }
+
+        .nav-item.is-active svg {
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .nav-item:hover,
+        .nav-item:focus-visible {
+            color: var(--main);
+        }
+
+        .nav-item:hover svg,
+        .nav-item:focus-visible svg {
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        /* ========================================
+           TOAST
+        ======================================== */
+
+        .toast {
+            position: absolute;
+            z-index: 100;
+
+            bottom: 96px;
+            left: 50%;
+
+            max-width: calc(100% - 40px);
+
+            padding: 11px 16px;
+
+            transform: translate(-50%, 16px);
+
+            border-radius: 22px;
+
+            color: #ffffff;
+            background: rgba(37, 40, 46, 0.92);
+
+            font-size: 12px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                opacity 0.2s,
+                transform 0.2s;
+
+            white-space: nowrap;
+        }
+
+        .toast.is-visible {
+            opacity: 1;
+
+            transform: translate(-50%, 0);
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid rgba(255,90,32,.3);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+
+    <header class="app-header">
+
+        <h1>추천</h1>
+
+        <div class="header-actions">
+
+            <a
+                class="icon-button"
+                href="notification.html"
+                aria-label="알림 페이지로 이동"
+            >
+                <svg
+                    class="header-icon alarm-icon"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        d="M14.7468 18.7496C14.6174 19.2238 14.369 19.6616 14.0154 20.0153C13.4809 20.5497 12.7556 20.8502 11.9998 20.8502C11.2441 20.8501 10.5195 20.5496 9.98511 20.0153C9.63147 19.6616 9.3831 19.2238 9.25366 18.7496H14.7468ZM11.9998 3.15002C13.7104 3.15002 15.3517 3.83006 16.5613 5.03967C17.7706 6.24924 18.45 7.88977 18.45 9.60022V14.2135L19.5183 15.2819C19.5812 15.3448 19.624 15.4251 19.6414 15.5123C19.6587 15.5995 19.6499 15.69 19.616 15.7721C19.5819 15.8543 19.5239 15.9248 19.45 15.9742C19.376 16.0237 19.2889 16.0504 19.2 16.0504H4.80054C4.71163 16.0504 4.62447 16.0236 4.55054 15.9742C4.47655 15.9248 4.41857 15.8543 4.38452 15.7721C4.35052 15.6899 4.34179 15.5996 4.35913 15.5123C4.37649 15.425 4.41926 15.3448 4.48218 15.2819L5.55054 14.2135V9.60022C5.55054 7.8897 6.22976 6.24926 7.43921 5.03967C8.64874 3.83014 10.2892 3.15011 11.9998 3.15002Z"
+                    />
+                </svg>
+            </a>
+
+            <a
+                class="icon-button"
+                href="cart.html"
+                aria-label="장바구니 페이지로 이동"
+            >
+                <svg
+                    class="header-icon bag-icon"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        class="bag-outline"
+                        d="M12 1.5C13.3924 1.5 14.7273 2.05352 15.7119 3.03809C16.6965 4.02265 17.25 5.35761 17.25 6.75V7.5H20.25C20.4473 7.49957 20.6429 7.53862 20.8252 7.61426C21.0072 7.68986 21.1726 7.80057 21.3115 7.94043C21.451 8.07927 21.5615 8.24492 21.6367 8.42676C21.7119 8.60854 21.7506 8.80329 21.75 9V19.1836C21.7495 19.6236 21.6597 20.0594 21.4863 20.4639L21.418 20.6133C21.2489 20.9583 21.0198 21.2713 20.7412 21.5371C20.1086 22.1548 19.2592 22.5003 18.375 22.5H5.625C3.79688 22.5 2.25 20.9531 2.25 19.125V9C2.25 8.65199 2.37124 8.31669 2.58984 8.0498L2.68945 7.93945C2.97076 7.65815 3.35218 7.5 3.75 7.5H6.75V6.75C6.75 5.35761 7.30352 4.02265 8.28809 3.03809C9.27265 2.05352 10.6076 1.5 12 1.5ZM3.75 19.125C3.75 20.1247 4.6253 21 5.625 21H18.375C18.8674 21.0002 19.341 20.8079 19.6934 20.4639L19.6992 20.457L19.7061 20.4512C19.8777 20.2874 20.0139 20.0901 20.1074 19.8721C20.2007 19.6544 20.2495 19.4204 20.25 19.1836V9H3.75V19.125ZM12 3C11.0054 3 10.0519 3.39537 9.34863 4.09863L9.21973 4.2334C8.59706 4.92125 8.25 5.81776 8.25 6.75V7.5H15.75V6.75C15.75 5.81776 15.4029 4.92125 14.7803 4.2334L14.6514 4.09863C13.9481 3.39537 12.9946 3 12 3Z"
+                    />
+
+                    <rect
+                        class="bag-fill"
+                        x="2.25"
+                        y="7.5"
+                        width="19.5"
+                        height="15"
+                        rx="3.375"
+                    />
+                </svg>
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+
+    <main class="main" id="top">
+
+        <div class="content">
+
+            <!-- 권그린님 추천 -->
+
+            <section class="section">
+
+                <h2 class="section-title personal">
+                    <span class="personal-name">권그린</span><span class="personal-text">님을 위한 추천</span>
+                </h2>
+
+                <div class="horizontal-row">
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EC%82%AC%EA%B3%BC.jpg"
+                            alt="못난이 사과"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 사과 1.5kg</h3>
+                            <p class="product-price">7,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 사과 1.5kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%ED%86%A0%EB%A7%88%ED%86%A0.jpg"
+                            alt="못난이 토마토"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 토마토 1kg</h3>
+                            <p class="product-price">4,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 토마토 1kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EA%B0%90%EC%9E%90.jpg"
+                            alt="못난이 감자"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 감자 2kg</h3>
+                            <p class="product-price">5,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 감자 2kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EB%8B%B9%EA%B7%BC.jpg"
+                            alt="못난이 당근"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 당근 1kg</h3>
+                            <p class="product-price">3,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 당근 1kg">담기</button>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- 오늘 구출 식품 -->
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    🚨 오늘 구출 식품
+                </h2>
+
+                <div class="horizontal-row">
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EA%B7%A4.jpg"
+                            alt="옅은 귤"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">옅은 귤 5kg (혼합과)</h3>
+                            <p class="product-price">11,000원</p>
+                            <button class="add-button" type="button" data-product="옅은 귤 5kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%ED%8F%AC%EB%8F%84.png"
+                            alt="못난이 포도 1kg"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 포도 1kg</h3>
+                            <p class="product-price">6,500원</p>
+                            <button class="add-button" type="button" data-product="못난이 포도 1kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EB%B0%A4.png"
+                            alt="실속 알밤 1kg"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">실속 알밤 1kg</h3>
+                            <p class="product-price">4,900원</p>
+                            <button class="add-button" type="button" data-product="실속 알밤 1kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%ED%8C%8C%ED%94%84%EB%A6%AC%EC%B9%B4.jpg"
+                            alt="못난이 파프리카"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 파프리카 3입</h3>
+                            <p class="product-price">3,500원</p>
+                            <button class="add-button" type="button" data-product="못난이 파프리카 3입">담기</button>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- 제철 추천 -->
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    🌸 제철 추천
+                </h2>
+
+                <div class="horizontal-row">
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EB%8C%80%EC%B6%94.png"
+                            alt="못난이 대추 1kg"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 대추 1kg</h3>
+                            <p class="product-price">5,000원</p>
+                            <button class="add-button" type="button" data-product="못난이 대추 1kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EB%B0%B0.png"
+                            alt="못난이 배 3개입"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 배 3개입 300g</h3>
+                            <p class="product-price">3,500원</p>
+                            <button class="add-button" type="button" data-product="못난이 배 3개입 300g">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EC%84%9D%EB%A5%98.png"
+                            alt="못난이 석류 2개입"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 석류 2개입</h3>
+                            <p class="product-price">3,500원</p>
+                            <button class="add-button" type="button" data-product="못난이 석류 2개입">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EA%BD%83%EA%B2%8C.png"
+                            alt="국내산 꼬마 꽃게 1kg"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">국내산 꼬마 꽃게 1kg</h3>
+                            <p class="product-price">13,000원</p>
+                            <button class="add-button" type="button" data-product="국내산 꼬마 꽃게 1kg">담기</button>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- 인기 상품 -->
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    ✨ 인기 상품
+                </h2>
+
+                <div class="horizontal-row">
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%ED%86%A0%EB%A7%88%ED%86%A0.jpg"
+                            alt="못난이 토마토"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 토마토 1kg</h3>
+                            <p class="product-price">4,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 토마토 1kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EC%98%A4%EC%9D%B4.jpg"
+                            alt="못난이 오이"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 오이 5입</h3>
+                            <p class="product-price">3,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 오이 5입">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EC%82%AC%EA%B3%BC.jpg"
+                            alt="못난이 사과"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 사과 1.5kg</h3>
+                            <p class="product-price">7,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 사과 1.5kg">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EB%8B%B9%EA%B7%BC.jpg"
+                            alt="못난이 당근"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">못난이 당근 1kg</h3>
+                            <p class="product-price">3,900원</p>
+                            <button class="add-button" type="button" data-product="못난이 당근 1kg">담기</button>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- 밀키트 추천 -->
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    🍱 가성비 밀키트 추천
+                </h2>
+
+                <div class="horizontal-row">
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EA%B3%A0%EA%B5%AC%EB%A7%88%EB%A7%9B%ED%83%95.jpg"
+                            alt="꼬마 고구마 맛탕"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">꼬마 고구마 맛탕</h3>
+                            <p class="product-price">7,500원</p>
+                            <button class="add-button" type="button" data-product="꼬마 고구마 맛탕">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EB%B9%84%EB%B9%94%EB%B0%A5.jpg"
+                            alt="알뜰 채소 비빔밥"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">알뜰 채소 비빔밥</h3>
+                            <p class="product-price">8,900원</p>
+                            <button class="add-button" type="button" data-product="알뜰 채소 비빔밥">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EC%A7%9C%EA%B8%80%EC%9D%B4.jpg"
+                            alt="감자 짜글이 밀키트"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">듬뿍 감자 짜글이</h3>
+                            <p class="product-price">9,500원</p>
+                            <button class="add-button" type="button" data-product="듬뿍 감자 짜글이">담기</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <img
+                            class="product-img"
+                            src="https://ch1156ae-sketch.github.io/new/home_image/%EC%B9%B4%EB%A0%88.jpg"
+                            alt="채소 카레 밀키트"
+                        />
+
+                        <div class="product-info">
+                            <h3 class="product-name">알뜰 채소 카레</h3>
+                            <p class="product-price">8,500원</p>
+                            <button class="add-button" type="button" data-product="알뜰 채소 카레">담기</button>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- 오늘 뭐먹지 -->
+
+            <section class="section">
+
+                <h2 class="section-title">
+                    🍽️ 오늘 뭐먹지?
+                </h2>
+
+                <div class="recipe-row">
+
+                    <article class="recipe-card">
+
+                        <img
+                            class="recipe-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%ED%86%A0%EB%A7%88%ED%86%A0%20%ED%8C%8C%EC%8A%A4%ED%83%80.jpg"
+                            alt="토마토 파스타"
+                        />
+
+                        <div class="recipe-info">
+
+                            <h3 class="recipe-name">
+                                토마토 파스타
+                            </h3>
+
+                            <p class="recipe-label">
+                                주요 재료
+                            </p>
+
+                            <p class="recipe-detail">
+                                토마토, 마늘, 올리브오일
+                            </p>
+
+                            <p class="recipe-label">
+                                특징
+                            </p>
+
+                            <p class="recipe-detail">
+                                못난이 토마토 활용 대표 레시피
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                    <article class="recipe-card">
+
+                        <img
+                            class="recipe-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EA%B0%90%EC%9E%90%EC%88%98%ED%94%84.jpg"
+                            alt="감자 수프"
+                        />
+
+                        <div class="recipe-info">
+
+                            <h3 class="recipe-name">
+                                감자 수프
+                            </h3>
+
+                            <p class="recipe-label">
+                                주요 재료
+                            </p>
+
+                            <p class="recipe-detail">
+                                감자, 양파, 우유
+                            </p>
+
+                            <p class="recipe-label">
+                                특징
+                            </p>
+
+                            <p class="recipe-detail">
+                                못난이 감자 활용 레시피
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                    <article class="recipe-card">
+
+                        <img
+                            class="recipe-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EC%98%A4%EC%9D%B4%20%EC%83%90%EB%9F%AC%EB%93%9C.jpg"
+                            alt="오이 샐러드"
+                        />
+
+                        <div class="recipe-info">
+
+                            <h3 class="recipe-name">
+                                오이 샐러드
+                            </h3>
+
+                            <p class="recipe-label">
+                                주요 재료
+                            </p>
+
+                            <p class="recipe-detail">
+                                오이, 양파, 식초
+                            </p>
+
+                            <p class="recipe-label">
+                                특징
+                            </p>
+
+                            <p class="recipe-detail">
+                                간단한 다이어트 레시피
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                    <article class="recipe-card">
+
+                        <img
+                            class="recipe-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%ED%86%A0%EB%A7%88%ED%86%A0%20%EC%8A%A4%ED%8A%9C.jpg"
+                            alt="토마토 스튜"
+                        />
+
+                        <div class="recipe-info">
+
+                            <h3 class="recipe-name">
+                                토마토 스튜
+                            </h3>
+
+                            <p class="recipe-label">
+                                주요 재료
+                            </p>
+
+                            <p class="recipe-detail">
+                                토마토, 감자, 양파
+                            </p>
+
+                            <p class="recipe-label">
+                                특징
+                            </p>
+
+                            <p class="recipe-detail">
+                                못난이 채소 대량 소비 가능
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                    <article class="recipe-card">
+
+                        <img
+                            class="recipe-img"
+                            src="https://ch1156ae-sketch.github.io/new/recommend_img/%EB%94%B8%EA%B8%B0%20%EC%9A%94%EA%B1%B0%ED%8A%B8%20%EB%B3%BC.jpg"
+                            alt="딸기 요거트 볼"
+                        />
+
+                        <div class="recipe-info">
+
+                            <h3 class="recipe-name">
+                                딸기 요거트 볼
+                            </h3>
+
+                            <p class="recipe-label">
+                                주요 재료
+                            </p>
+
+                            <p class="recipe-detail">
+                                딸기, 요거트, 그래놀라
+                            </p>
+
+                            <p class="recipe-label">
+                                특징
+                            </p>
+
+                            <p class="recipe-detail">
+                                인기 과일 레시피 
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- ========================================
+         위로가기 버튼
+         홈 코드와 동일
+    ========================================= -->
+
+    <button
+        class="scroll-top-button"
+        type="button"
+        aria-label="추천 화면 맨 위로 이동"
+        aria-hidden="true"
+        tabindex="-1"
+    >
+        <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+        >
+            <path d="M6.5 14.5 12 9l5.5 5.5" />
+        </svg>
+    </button>
+
+    <!-- ========================================
+         BOTTOM NAV
+    ========================================= -->
+
+    <nav
+        class="bottom-nav"
+        aria-label="하단 메뉴"
+    >
+
+        <a
+            class="nav-item"
+            href="index.html"
+        >
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M12.7451 4.49609V4.49707L12.75 4.5L18.75 9L18.7568 9.00488C18.9086 9.11625 19.0273 9.25715 19.1172 9.43652C19.2066 9.61497 19.2504 9.79893 19.25 9.99805V19C19.25 19.3493 19.1344 19.6302 18.8818 19.8828C18.6293 20.1354 18.349 20.2504 18.001 20.25H15C14.906 20.25 14.863 20.2264 14.8193 20.1826C14.7855 20.1487 14.7638 20.1149 14.7549 20.0605L14.75 19.998V15C14.75 14.5274 14.5814 14.0958 14.2412 13.7568C13.9026 13.4194 13.4729 13.2512 13.002 13.25H11C10.5274 13.25 10.0958 13.4186 9.75684 13.7588C9.41941 14.0974 9.25115 14.5271 9.25 14.998V20C9.25 20.0941 9.22631 20.1379 9.18164 20.1826C9.13708 20.2272 9.0941 20.2502 9.00195 20.25H6C5.6503 20.25 5.36983 20.1345 5.11816 19.8828C4.89805 19.6627 4.78191 19.42 4.75586 19.1279L4.75 18.999V10C4.75 9.80021 4.79411 9.61556 4.88379 9.43652C4.97398 9.25657 5.09271 9.11525 5.24414 9.00391L5.25 9L11.25 4.5L11.2549 4.49609C11.471 4.33159 11.7104 4.25 12 4.25C12.2896 4.25 12.529 4.33159 12.7451 4.49609Z"
+                    stroke-width="1.5"
+                />
+            </svg>
+
+            <span>홈</span>
+        </a>
+
+        <a
+            class="nav-item"
+            href="category.html"
+            aria-label="카테고리 페이지로 이동"
+        >
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M4 13.75H10C10.0663 13.75 10.1299 13.7764 10.1768 13.8232C10.2236 13.8701 10.25 13.9337 10.25 14V20C10.25 20.0663 10.2236 20.1299 10.1768 20.1768C10.1299 20.2236 10.0663 20.25 10 20.25H4C3.93369 20.25 3.87013 20.2236 3.82324 20.1768C3.77636 20.1299 3.75 20.0663 3.75 20V14C3.75 13.9337 3.77636 13.8701 3.82324 13.8232C3.87013 13.7764 3.9337 13.75 4 13.75ZM17 13.75C18.7918 13.75 20.25 15.2082 20.25 17C20.25 18.7918 18.7918 20.25 17 20.25C15.2082 20.25 13.75 18.7918 13.75 17C13.75 15.2082 15.2082 13.75 17 13.75ZM4 3.75H10C10.0663 3.75 10.1299 3.77636 10.1768 3.82324C10.2236 3.87013 10.25 3.9337 10.25 4V10C10.25 10.0663 10.2236 10.1299 10.1768 10.1768C10.1299 10.2236 10.0663 10.25 10 10.25H4C3.9337 10.25 3.87013 10.2236 3.82324 10.1768C3.77636 10.1299 3.75 10.0663 3.75 10V4C3.75 3.9337 3.77636 3.87013 3.82324 3.82324C3.87013 3.77636 3.9337 3.75 4 3.75ZM14 3.75H20C20.0663 3.75 20.1299 3.77636 20.1768 3.82324C20.2236 3.87013 20.25 3.93369 20.25 4V10C20.25 10.0663 20.2236 10.1299 20.1768 10.1768C20.1299 10.2236 20.0663 10.25 20 10.25H14C13.9337 10.25 13.8701 10.2236 13.8232 10.1768C13.7764 10.1299 13.75 10.0663 13.75 10V4C13.75 3.9337 13.7764 3.87013 13.8232 3.82324C13.8701 3.77636 13.9337 3.75 14 3.75Z"
+                    stroke-width="1.5"
+                />
+            </svg>
+
+            <span>카테고리</span>
+        </a>
+
+        <a
+            class="nav-item is-active"
+            href="recommend.html"
+            aria-current="page"
+            aria-label="추천 페이지로 이동"
+        >
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M11.9998 2.75C12.1136 2.75 12.3146 2.79441 12.7078 3.30762C13.1015 3.82174 13.5464 4.61546 14.1921 5.77344L14.5203 6.36133C14.8476 6.94867 15.1066 7.44513 15.5408 7.77539C15.9804 8.10978 16.5244 8.21618 17.1589 8.35938L17.7957 8.50391C19.051 8.78814 19.9052 8.98336 20.49 9.21387C21.0583 9.43795 21.1799 9.62178 21.2263 9.76953V9.77051C21.2746 9.9259 21.2767 10.1647 20.9353 10.707C20.6756 11.1196 20.2819 11.6088 19.741 12.249L19.1501 12.9424L18.7166 13.4492L18.7156 13.4502C18.3352 13.8953 18.0043 14.2647 17.8181 14.7021L17.7478 14.8945C17.6262 15.2866 17.6336 15.6947 17.6726 16.1611L17.7185 16.6494L17.7849 17.3271C17.9137 18.6593 17.9999 19.5766 17.9705 20.2373C17.9411 20.896 17.8025 21.0782 17.6921 21.1621C17.5936 21.2368 17.4105 21.3194 16.8171 21.1494C16.2144 20.9767 15.4135 20.6101 14.239 20.0693H14.238L13.6404 19.7949C13.0487 19.5217 12.5491 19.2754 11.9998 19.2754C11.4498 19.2755 10.9497 19.5223 10.3572 19.7959L9.76245 20.0693C8.58711 20.6103 7.78537 20.9775 7.18237 21.1504C6.66323 21.2992 6.45878 21.2545 6.35034 21.1914L6.30933 21.1631C6.19809 21.0786 6.05853 20.8961 6.02905 20.2373C5.99951 19.5766 6.08679 18.6593 6.21558 17.3271L6.28101 16.6504H6.28198C6.33965 16.0545 6.39787 15.5566 6.30151 15.0908L6.25073 14.8936C6.08769 14.3671 5.7167 13.9568 5.28296 13.4502L4.85034 12.9424L4.25952 12.249C3.71845 11.6089 3.32491 11.1197 3.06519 10.707C2.7242 10.1653 2.72481 9.92667 2.77319 9.77051C2.81892 9.62316 2.93949 9.43895 3.5105 9.21387C4.09561 8.98326 4.95044 8.78764 6.20581 8.50391L6.84155 8.35938C7.47641 8.21588 8.01764 8.109 8.45776 7.77539C8.78494 7.52739 9.01283 7.18584 9.2439 6.7832L9.48022 6.36133L9.80835 5.77344C10.4541 4.61547 10.898 3.82173 11.2917 3.30762C11.6847 2.79454 11.8859 2.75006 11.9998 2.75Z"
+                    stroke-width="1.5"
+                />
+            </svg>
+
+            <span>추천</span>
+        </a>
+
+        <a
+            class="nav-item"
+            href="search.html"
+            aria-label="검색 페이지로 이동"
+        >
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    class="nav-icon-solid"
+                    d="M10.3331 3.04016C14.2169 3.04016 17.3652 6.18864 17.3654 10.0724C17.3654 11.8771 16.684 13.5217 15.5665 14.7667L20.4796 19.6798C20.7722 19.9727 20.7724 20.4476 20.4796 20.7404C20.1868 21.0331 19.712 21.0329 19.4191 20.7404L14.4503 15.7716C13.2928 16.6093 11.8712 17.1046 10.3331 17.1046C6.44932 17.1045 3.3009 13.9562 3.3009 10.0724C3.30105 6.18869 6.44942 3.04024 10.3331 3.04016ZM10.3331 4.54016C7.27784 4.54024 4.80105 7.01712 4.8009 10.0724C4.8009 13.1278 7.27775 15.6045 10.3331 15.6046C13.3886 15.6046 15.8654 13.1278 15.8654 10.0724C15.8652 7.01707 13.3885 4.54016 10.3331 4.54016Z"
+                />
+            </svg>
+
+            <span>검색</span>
+        </a>
+
+        <a
+            class="nav-item"
+            href="mypage.html"
+            aria-label="마이페이지로 이동"
+        >
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M12 13.5C15.5199 13.5 19.0356 15.6912 19.4678 20.0693L19.5 20.5C17.5698 20.5983 9.00655 20.6615 5.19534 20.5293L4.50003 20.5C4.73747 15.8358 8.36662 13.5 12 13.5ZM12 4.5C12.7957 4.50001 13.5585 4.81631 14.1211 5.37891C14.6837 5.94151 15 6.70436 15 7.5C15 8.29564 14.6837 9.05849 14.1211 9.62109C13.5585 10.1837 12.7957 10.5 12 10.5C11.2044 10.5 10.4415 10.1837 9.87894 9.62109C9.31633 9.05848 9.00003 8.29565 9.00003 7.5C9.00003 6.70435 9.31633 5.94152 9.87894 5.37891C10.4415 4.81631 11.2044 4.5 12 4.5Z"
+                    stroke-width="1.5"
+                />
+            </svg>
+
+            <span>마이페이지</span>
+        </a>
+
+    </nav>
+
+    <div
+        class="toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const toast =
+            document.querySelector(".toast");
+
+        const mainScroll =
+            document.querySelector(".main");
+
+        const scrollTopButton =
+            document.querySelector(".scroll-top-button");
+
+        let toastTimer;
+
+        /* ========================================
+           위로가기
+           홈 페이지와 동일
+        ======================================== */
+
+        function scrollRecommendToTop() {
+
+            const reduceMotion =
+                window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches;
+
+            mainScroll.scrollTo({
+                top: 0,
+                behavior: reduceMotion
+                    ? "auto"
+                    : "smooth"
+            });
+        }
+
+        scrollTopButton.addEventListener(
+            "click",
+            scrollRecommendToTop
+        );
+
+        function updateScrollTopButton() {
+
+            const isVisible =
+                mainScroll.scrollTop > 200;
+
+            scrollTopButton.classList.toggle(
+                "is-visible",
+                isVisible
+            );
+
+            scrollTopButton.setAttribute(
+                "aria-hidden",
+                String(!isVisible)
+            );
+
+            scrollTopButton.tabIndex =
+                isVisible ? 0 : -1;
+        }
+
+        mainScroll.addEventListener(
+            "scroll",
+            updateScrollTopButton,
+            {
+                passive: true
+            }
+        );
+
+        updateScrollTopButton();
+
+        /* ========================================
+           TOAST
+        ======================================== */
+
+        function showToast(message) {
+
+            clearTimeout(toastTimer);
+
+            toast.textContent = message;
+
+            toast.classList.add(
+                "is-visible"
+            );
+
+            toastTimer =
+                setTimeout(() => {
+
+                    toast.classList.remove(
+                        "is-visible"
+                    );
+
+                }, 1600);
+        }
+
+        /* ========================================
+           담기 버튼
+        ======================================== */
+
+        document
+            .querySelectorAll(".add-button")
+            .forEach((button) => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const added =
+                            button.classList.toggle(
+                                "is-added"
+                            );
+
+                        button.textContent =
+                            added
+                                ? "담김"
+                                : "담기";
+
+                        showToast(
+                            added
+                                ? `${button.dataset.product}을 담았어요.`
+                                : `${button.dataset.product}을 뺐어요.`
+                        );
+                    }
+                );
+            });
+
+        /* ========================================
+           가로 드래그
+        ======================================== */
+
+        document
+            .querySelectorAll(
+                ".horizontal-row, .recipe-row"
+            )
+            .forEach((row) => {
+
+                let dragging = false;
+                let moved = false;
+
+                let startX = 0;
+                let startScrollLeft = 0;
+
+                row.addEventListener(
+                    "pointerdown",
+                    (event) => {
+
+                        if (
+                            event.pointerType === "touch" ||
+                            event.button !== 0
+                        ) {
+                            return;
+                        }
+
+                        dragging = true;
+                        moved = false;
+
+                        startX =
+                            event.clientX;
+
+                        startScrollLeft =
+                            row.scrollLeft;
+
+                        row.classList.add(
+                            "is-dragging"
+                        );
+
+                        row.setPointerCapture(
+                            event.pointerId
+                        );
+                    }
+                );
+
+                row.addEventListener(
+                    "pointermove",
+                    (event) => {
+
+                        if (!dragging) {
+                            return;
+                        }
+
+                        const delta =
+                            event.clientX -
+                            startX;
+
+                        if (
+                            Math.abs(delta) > 4
+                        ) {
+                            moved = true;
+                        }
+
+                        row.scrollLeft =
+                            startScrollLeft -
+                            delta;
+                    }
+                );
+
+                function stop(event) {
+
+                    if (!dragging) {
+                        return;
+                    }
+
+                    dragging = false;
+
+                    row.classList.remove(
+                        "is-dragging"
+                    );
+
+                    if (
+                        row.hasPointerCapture(
+                            event.pointerId
+                        )
+                    ) {
+                        row.releasePointerCapture(
+                            event.pointerId
+                        );
+                    }
+                }
+
+                row.addEventListener(
+                    "pointerup",
+                    stop
+                );
+
+                row.addEventListener(
+                    "pointercancel",
+                    stop
+                );
+
+                row.addEventListener(
+                    "click",
+                    (event) => {
+
+                        if (!moved) {
+                            return;
+                        }
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        moved = false;
+                    },
+                    true
+                );
+            });
+    });
+</script>
+
+</body>
+</html>
