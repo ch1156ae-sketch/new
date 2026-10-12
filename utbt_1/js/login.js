@@ -7,7 +7,7 @@
             const saveIdCheckbox = document.querySelector("#save-id");
             const loginButton = document.querySelector(".login-button");
             const formMessage = document.querySelector(".form-message");
-            const LOGIN_SUCCESS_URL = "main.html";
+            const LOGIN_SUCCESS_URL = "https://ch1156ae-sketch.github.io/new/utbt-github-ready/index.html";
             const SAVED_ID_KEY = "utbt-saved-id";
 
         function resetLoginForm() {
