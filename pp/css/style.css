@@ -307,7 +307,12 @@ img{display:block;max-width:100%}
 .video-card:hover .case-visual::before{
     background:var(--blue);color:#fff;
 }
-.video-card .case-thumb-image{aspect-ratio:16/9;object-fit:cover}
+.video-card .case-thumb-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: cover;
+}
 
 /* SERVICES */
 .outcome-list{display:grid;gap:20px}

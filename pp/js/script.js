@@ -22,8 +22,8 @@ const portfolioProjects = [
         title:"반응형 웹사이트",
         subtitle:"이벤트 페이지",
         meta:"Web / Responsive",
-        thumbnail:"https://ch1156ae-sketch.github.io/newhttps://ch1156ae-sketch.github.io/new/images3/responsive.jpg",
-        modalImage:"https://ch1156ae-sketch.github.io/newhttps://ch1156ae-sketch.github.io/new/images3/modal/responsive-detail.jpg",
+        thumbnail:"https://ch1156ae-sketch.github.io/new/images3/responsive.jpg",
+        modalImage:"https://ch1156ae-sketch.github.io/new/images3/responsive-detail.jpg",
         url:"https://ch1156ae-sketch.github.io/new/event/index.html",
         prd:"./documents/responsive-prd.pdf",
         description:"다양한 화면 크기에 최적화한 반응형 웹사이트 프로젝트입니다."
@@ -139,7 +139,7 @@ const portfolioProjects = [
         subtitle:"상세페이지",
         meta:"Detail Page / Beauty",
         thumbnail:"https://ch1156ae-sketch.github.io/new/images/thumb_lip.png",
-        modalImage:"https://ch1156ae-sketch.github.io/new/lip_detail.jpgg"
+        modalImage:"https://ch1156ae-sketch.github.io/new/images3/lip_detail.jpg"
     },
     {
         id:"detail-2",
@@ -159,7 +159,7 @@ const portfolioProjects = [
         subtitle:"상세페이지",
         meta:"Detail Page / furniture",
         thumbnail:"https://ch1156ae-sketch.github.io/new/images/table.jpg",
-        modalImage:"https://ch1156ae-sketch.github.io/new/images/modal/detail3-full.jpg"
+        modalImage:"https://ch1156ae-sketch.github.io/new/images3/detail3-full.jpg"
     },
     {
         id:"detail-4",
@@ -182,7 +182,7 @@ const portfolioProjects = [
         subtitle:"메인배너",
         meta:"Banner / Main",
         thumbnail:"https://ch1156ae-sketch.github.io/new/images/banner1.png",
-        modalImage:"./images/bd1.jpg"
+        modalImage:"https://ch1156ae-sketch.github.io/new/images/bd1.jpg"
     },
     {
         id:"banner-2",
@@ -266,7 +266,7 @@ const portfolioProjects = [
         title:"넛스터",
         subtitle:"영상 프로젝트",
         meta:"Video / Brand Film",
-        thumbnail:"https://ch1156ae-sketch.github.io/new/images/video1.png",
+        thumbnail:"https://ch1156ae-sketch.github.io/new/images3/nutster.png",
         video:"https://ch1156ae-sketch.github.io/new/nuts.mp4",
         description:"넛스터 영상 프로젝트입니다. 재생, 일시정지, 음량 조절 및 전체화면 기능을 사용할 수 있습니다."
     }
